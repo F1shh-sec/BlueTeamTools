@@ -108,7 +108,7 @@ func commandHandle(input string) {
 	case "disable":
 		disableAccounts()
 	default:
-		fmt.Println("Command Not Found...")
+		fmt.Println("Command Not Found...\n")
 	}
 }
 

@@ -1,6 +1,7 @@
 #!/bin/bash
+echo "Enter a new password: "
+read newPassword
 
-newPassword="Sup3rS3curep@ss"
 mapfile -t usersArray < <(awk -F":" '((($7=="/bin/bash")||($7=="/bin/sh"))&&($1!="root")){print $1}' /etc/passwd)
 echo "Found Users:" "${usersArray[@]}"
 # shellcheck disable=SC2068

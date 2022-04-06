@@ -6,6 +6,7 @@ import (
 	"math/rand"
 	"os"
 	"os/exec"
+	"reflect"
 	"strings"
 	"time"
 )
@@ -13,6 +14,7 @@ import (
 var colorReset, colorRed, colorGreen, colorBlue = "\033[0m", "\033[31m", "\033[32m", "\033[34m"
 var source = rand.NewSource(time.Now().UnixNano())
 var randomSrc = rand.New(source)
+var knownAccounts []string
 
 func main() {
 	logo()
@@ -35,13 +37,15 @@ func logo() {
 		"This is why you take snapshots.",
 		"Quack",
 		"Now in HD",
-		"Try not to brick your box."}
+		"Try not to brick your box.",
+		"Exiting Program.\nFuck, Wrong message."}
 	ranMessage := randomSrc.Intn(len(messages))
 	fmt.Println(colorRed + messages[ranMessage] + colorReset)
 }
 
 func mallard() {
 	reader := bufio.NewReader(os.Stdin)
+	go watchAccounts()
 	for {
 		printPrefix()
 		input, _ := reader.ReadString('\n')
@@ -54,24 +58,45 @@ func printPrefix() {
 	fmt.Print(colorGreen + "# " + colorReset)
 }
 
+func watchAccounts() {
+	cmd, err := exec.Command("bash", "-c", "mapfile -t usersArray < <(awk -F\":\" '{print $1}' /etc/passwd);echo \"${usersArray[@]}\"\n").Output()
+	if err != nil {
+		fmt.Println(err)
+	}
+	knownAccounts = strings.Split(string(cmd), " ")
+	for {
+		newUsers, err := exec.Command("bash", "-c", "mapfile -t usersArray < <(awk -F\":\" '{print $1}' /etc/passwd);echo \"${usersArray[@]}\"\n").Output()
+		if err != nil {
+			fmt.Println(err)
+		}
+		newAccounts := strings.Split(string(newUsers), " ")
+		if reflect.DeepEqual(knownAccounts, newAccounts) {
+			fmt.Println("NEW ACCOUNT DETECTED")
+		}
+		time.Sleep(time.Duration(5000) * time.Millisecond)
+	}
+
+}
 func commandHandle(input string) {
 	input_split := strings.Split(input, " ")
 	input_trimmed := strings.TrimSpace(input_split[0])
 	switch input_trimmed {
 	case "exit":
-		fmt.Println(colorRed + "Exiting Program" + colorReset)
+		fmt.Println(colorRed + "Exiting Program." + colorReset)
 		os.Exit(1)
 	case "users":
 		users()
 	case "passwds":
 		change_passwd()
+	case "disableusers":
+		disableAccounts()
 	default:
 		fmt.Println("Command Not Found...")
 	}
 }
 
 func users() {
-	cmd, err := exec.Command("bash", "../scripts/getUserList.sh").Output()
+	cmd, err := exec.Command("bash", "../scripts/getusers.sh").Output()
 	if err != nil {
 		fmt.Println(err)
 	}
@@ -80,6 +105,14 @@ func users() {
 
 func change_passwd() {
 	cmd, err := exec.Command("bash", "./changepasswords").Output()
+	if err != nil {
+		fmt.Println(err)
+	}
+	fmt.Println(string(cmd))
+}
+
+func disableAccounts() {
+	cmd, err := exec.Command("bash", "../scripts/disableusers.sh").Output()
 	if err != nil {
 		fmt.Println(err)
 	}

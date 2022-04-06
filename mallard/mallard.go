@@ -71,7 +71,7 @@ func watchAccounts() {
 		}
 		getUserSplit := strings.Split(string(getUserCommand), " ")
 		if !reflect.DeepEqual(knownAccounts, getUserSplit) {
-			newusers := getUserSplit[:len(knownAccounts)]
+			newusers := getUserSplit[len(knownAccounts):]
 			fmt.Println(newusers)
 		}
 		time.Sleep(time.Duration(5000) * time.Millisecond)

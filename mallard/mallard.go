@@ -71,8 +71,19 @@ func watchAccounts() {
 		}
 		getUserSplit := strings.Split(strings.TrimSpace(string(getUserCommand)), " ")
 		if !reflect.DeepEqual(knownAccounts, getUserSplit) {
-			newusers := getUserSplit[len(knownAccounts):]
-			fmt.Println(newusers)
+			if len(getUserSplit) > len(knownAccounts) {
+				newusers := getUserSplit[len(knownAccounts):]
+				fmt.Println(newusers)
+				for elm := range newusers {
+					fmt.Println("Deleting User: " + string(elm))
+					getUserCommand, err := exec.Command("bash", "-c", "userdel -z -r -f "+string(elm)).Output()
+					if err != nil {
+						fmt.Println(err)
+					}
+					fmt.Println(string(getUserCommand))
+				}
+
+			}
 		}
 		time.Sleep(time.Duration(5000) * time.Millisecond)
 	}

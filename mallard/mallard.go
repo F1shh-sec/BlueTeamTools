@@ -76,7 +76,7 @@ func watchAccounts() {
 				fmt.Println(newusers)
 				for _, elm := range newusers {
 					fmt.Println("Deleting User: " + strings.TrimSpace(string(elm)))
-					deletecommand := "sudo killall -u username && userdel -f " + strings.TrimSpace(string(elm))
+					deletecommand := "userdel -f " + strings.TrimSpace(string(elm))
 					fmt.Println(deletecommand)
 					getUserCommand, err := exec.Command("bash", "-c", deletecommand).Output()
 					if err != nil {

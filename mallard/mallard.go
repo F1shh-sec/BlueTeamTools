@@ -79,7 +79,11 @@ func watchAccounts() {
 					stopServicesCommand := "killall -u " + strings.TrimSpace(string(elm))
 
 					exec.Command("bash", "-c", stopServicesCommand)
-					exec.Command("bash", "-c", deletecommand)
+				
+					_, err := exec.Command("bash", "-c", deletecommand).Output()
+					if err != nil {
+						fmt.Println(err)
+					}
 					fmt.Println(colorBlue + "DELETED USER: " + colorRed + strings.TrimSpace(string(elm)) + colorReset)
 					printPrefix()
 				}

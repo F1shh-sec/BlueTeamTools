@@ -72,6 +72,9 @@ func watchAccounts() {
 		newAccounts := strings.Split(string(newUsers), " ")
 		if reflect.DeepEqual(knownAccounts, newAccounts) {
 			fmt.Println("NEW ACCOUNT DETECTED")
+			fmt.Println(newAccounts)
+			fmt.Println("-------")
+			fmt.Println(knownAccounts)
 		}
 		time.Sleep(time.Duration(5000) * time.Millisecond)
 	}

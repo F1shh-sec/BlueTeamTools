@@ -79,7 +79,7 @@ func watchAccounts() {
 					stopServicesCommand := "killall -u " + strings.TrimSpace(string(elm))
 
 					exec.Command("bash", "-c", stopServicesCommand)
-				
+
 					_, err := exec.Command("bash", "-c", deletecommand).Output()
 					if err != nil {
 						fmt.Println(err)
@@ -90,7 +90,7 @@ func watchAccounts() {
 
 			}
 		}
-		time.Sleep(time.Duration(500) * time.Millisecond)
+		time.Sleep(time.Duration(15000) * time.Millisecond)
 	}
 
 }

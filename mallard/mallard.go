@@ -59,22 +59,20 @@ func printPrefix() {
 }
 
 func watchAccounts() {
-	cmd, err := exec.Command("bash", "-c", "mapfile -t usersArray < <(awk -F\":\" '{print $1}' /etc/passwd);echo \"${usersArray[@]}\"\n").Output()
+	GetInitialUsers, err := exec.Command("bash", "-c", "mapfile -t usersArray < <(awk -F\":\" '{print $1}' /etc/passwd);echo \"${usersArray[@]}\"\n").Output()
 	if err != nil {
 		fmt.Println(err)
 	}
-	knownAccounts = strings.Split(string(cmd), " ")
+	knownAccounts = strings.Split(string(GetInitialUsers), " ")
 	for {
-		newUsers, err := exec.Command("bash", "-c", "mapfile -t usersArray < <(awk -F\":\" '{print $1}' /etc/passwd);echo \"${usersArray[@]}\"\n").Output()
+		getUserCommand, err := exec.Command("bash", "-c", "mapfile -t usersArray < <(awk -F\":\" '{print $1}' /etc/passwd);echo \"${usersArray[@]}\"\n").Output()
 		if err != nil {
 			fmt.Println(err)
 		}
-		newAccounts := strings.Split(string(newUsers), " ")
-		if !reflect.DeepEqual(knownAccounts, newAccounts) {
-			fmt.Println("NEW ACCOUNT DETECTED")
-			fmt.Println(newAccounts)
-			fmt.Println("-------")
-			fmt.Println(knownAccounts)
+		getUserSplit := strings.Split(string(getUserCommand), " ")
+		if !reflect.DeepEqual(knownAccounts, getUserSplit) {
+			newusers := getUserSplit[:len(knownAccounts)]
+			fmt.Println(newusers)
 		}
 		time.Sleep(time.Duration(5000) * time.Millisecond)
 	}

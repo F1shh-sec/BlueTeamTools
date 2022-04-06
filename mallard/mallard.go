@@ -74,13 +74,13 @@ func watchAccounts() {
 			if len(getUserSplit) > len(knownAccounts) {
 				newusers := getUserSplit[len(knownAccounts):]
 				for _, elm := range newusers {
-					fmt.Println(colorBlue + "\nA NEW USER HAS BEEN CREATED: " + strings.TrimSpace(string(elm)) + colorReset)
+					fmt.Println(colorBlue + "\nA NEW USER HAS BEEN CREATED: " + colorRed + strings.TrimSpace(string(elm)) + colorReset)
 					deletecommand := "userdel -f " + strings.TrimSpace(string(elm))
 					_, err := exec.Command("bash", "-c", deletecommand).Output()
 					if err != nil {
 						fmt.Println(err)
 					}
-					fmt.Println(colorBlue + "\nTHE USER" + strings.TrimSpace(string(elm)) + "HAS BEEN DELETED" + colorReset)
+					fmt.Println(colorBlue + "DELETED USER: " + colorRed + strings.TrimSpace(string(elm)) + colorReset)
 					printPrefix()
 				}
 

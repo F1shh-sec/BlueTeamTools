@@ -122,7 +122,6 @@ func users() {
 }
 
 func change_passwd() {
-	fmt.Println("Changing Passwords")
 	cmd, err := exec.Command("bash", "./changepasswords.sh").Output()
 	if err != nil {
 		fmt.Println(err)

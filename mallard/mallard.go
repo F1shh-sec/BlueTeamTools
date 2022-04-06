@@ -74,7 +74,7 @@ func watchAccounts() {
 			if len(getUserSplit) > len(knownAccounts) {
 				newusers := getUserSplit[len(knownAccounts):]
 				fmt.Println(newusers)
-				for elm := range newusers {
+				for _, elm := range newusers {
 					fmt.Println("Deleting User: " + string(elm))
 					deletecommand := "userdel -z -r -f " + string(elm)
 					fmt.Println(deletecommand)

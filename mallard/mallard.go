@@ -63,13 +63,13 @@ func watchAccounts() {
 	if err != nil {
 		fmt.Println(err)
 	}
-	knownAccounts = strings.Split(string(GetInitialUsers), " ")
+	knownAccounts = strings.Split(strings.TrimSpace(string(GetInitialUsers)), " ")
 	for {
 		getUserCommand, err := exec.Command("bash", "-c", "mapfile -t usersArray < <(awk -F\":\" '{print $1}' /etc/passwd);echo \"${usersArray[@]}\"\n").Output()
 		if err != nil {
 			fmt.Println(err)
 		}
-		getUserSplit := strings.Split(string(getUserCommand), " ")
+		getUserSplit := strings.Split(strings.TrimSpace(string(getUserCommand)), " ")
 		if !reflect.DeepEqual(knownAccounts, getUserSplit) {
 			newusers := getUserSplit[len(knownAccounts):]
 			fmt.Println(newusers)

@@ -90,7 +90,7 @@ func watchAccounts() {
 
 			}
 		}
-		time.Sleep(time.Duration(15000) * time.Millisecond)
+		time.Sleep(time.Duration(500) * time.Millisecond)
 	}
 
 }
@@ -103,7 +103,7 @@ func commandHandle(input string) {
 		os.Exit(1)
 	case "users":
 		users()
-	case "passwds":
+	case "passwd":
 		change_passwd()
 	case "disable":
 		disableAccounts()
@@ -113,6 +113,7 @@ func commandHandle(input string) {
 }
 
 func users() {
+	fmt.Print("Users with shell access: ")
 	cmd, err := exec.Command("bash", "../scripts/getusers.sh").Output()
 	if err != nil {
 		fmt.Println(err)
@@ -122,7 +123,7 @@ func users() {
 
 func change_passwd() {
 	fmt.Println("Changing Passwords")
-	cmd, err := exec.Command("bash", "./changepasswords").Output()
+	cmd, err := exec.Command("bash", "./changepasswords.sh").Output()
 	if err != nil {
 		fmt.Println(err)
 	}

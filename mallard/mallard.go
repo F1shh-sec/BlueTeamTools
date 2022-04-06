@@ -70,7 +70,7 @@ func watchAccounts() {
 			fmt.Println(err)
 		}
 		newAccounts := strings.Split(string(newUsers), " ")
-		if reflect.DeepEqual(knownAccounts, newAccounts) {
+		if !reflect.DeepEqual(knownAccounts, newAccounts) {
 			fmt.Println("NEW ACCOUNT DETECTED")
 			fmt.Println(newAccounts)
 			fmt.Println("-------")

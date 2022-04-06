@@ -105,7 +105,7 @@ func commandHandle(input string) {
 		users()
 	case "passwds":
 		change_passwd()
-	case "disableusers":
+	case "disable":
 		disableAccounts()
 	default:
 		fmt.Println("Command Not Found...")

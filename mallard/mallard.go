@@ -76,10 +76,10 @@ func watchAccounts() {
 				for _, elm := range newusers {
 					fmt.Println(colorBlue + "\nA NEW USER HAS BEEN CREATED: " + colorRed + strings.TrimSpace(string(elm)) + colorReset)
 					deletecommand := "userdel -f " + strings.TrimSpace(string(elm))
-					_, err := exec.Command("bash", "-c", deletecommand).Output()
-					if err != nil {
-						fmt.Println(err)
-					}
+					stopServicesCommand := "killall -u " + strings.TrimSpace(string(elm))
+
+					exec.Command("bash", "-c", stopServicesCommand)
+					exec.Command("bash", "-c", deletecommand)
 					fmt.Println(colorBlue + "DELETED USER: " + colorRed + strings.TrimSpace(string(elm)) + colorReset)
 					printPrefix()
 				}

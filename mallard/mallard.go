@@ -123,7 +123,10 @@ func commandHandle(input string) {
 		users()
 	case "passwd":
 		if len(input_split) > 1 {
+			fmt.Println(strings.TrimSpace(input_split[1]))
 			change_passwd(strings.TrimSpace(input_split[1]))
+		} else {
+			change_passwd("SuperSecurePassword")
 		}
 	case "disable":
 		disableAccounts()

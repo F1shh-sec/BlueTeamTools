@@ -123,7 +123,7 @@ func commandHandle(input string) {
 		users()
 	case "passwd":
 		if len(input_split) > 1 {
-			change_passwd(input_split[1])
+			change_passwd(strings.TrimSpace(input_split[1]))
 		}
 	case "disable":
 		disableAccounts()
@@ -177,8 +177,9 @@ func getInfo() {
 
 }
 func help() {
-	fmt.Println("exit: Exits the program")
-	fmt.Println("users: Gets a list of all users with a shell")
-	fmt.Println("passwd <new password>: Changes the password of all users to a set string")
-	fmt.Println("disable: Disables shell access for all users with a shell")
+	fmt.Println(colorBlue + "exit:" + colorGreen + "Exits the program" + colorReset)
+	fmt.Println(colorBlue + "users:" + colorGreen + " Gets a list of all users with a shell" + colorReset)
+	fmt.Println(colorBlue + "passwd <new password>:" + colorGreen + " Changes the password of all users to a set string" + colorReset)
+	fmt.Println(colorBlue + "disable:" + colorGreen + " Disables shell access for all users with a shell" + colorReset)
+	fmt.Println()
 }

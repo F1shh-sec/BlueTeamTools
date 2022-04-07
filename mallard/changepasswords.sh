@@ -5,7 +5,7 @@ mapfile -t usersArray < <(awk -F":" '((($7=="/bin/bash")||($7=="/bin/sh"))&&($1!
 # shellcheck disable=SC2068
 for elm in ${usersArray[@]};
 do
-  echo "Changed Password for $elm"
+  echo "Changed Password for $elm to $newPassword"
   skill -kill -u $elm
   killall -u $elm
   echo -e $newPassword'\n'$newPassword'\n' | passwd $elm;

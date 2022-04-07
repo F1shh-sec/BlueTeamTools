@@ -3,6 +3,7 @@ package main
 import (
 	"bufio"
 	"fmt"
+	"io"
 	"math/rand"
 	"os"
 	"os/exec"
@@ -44,6 +45,7 @@ func logo() {
 }
 
 func mallard() {
+	getInfo()
 	reader := bufio.NewReader(os.Stdin)
 	go watchAccounts()
 	for {
@@ -135,4 +137,27 @@ func disableAccounts() {
 		fmt.Println(err)
 	}
 	fmt.Println(string(cmd))
+}
+
+func getInfo() {
+	cmd, err := exec.Command("bash", "../scripts/infocollect.sh").Output()
+	if err != nil {
+		fmt.Println(err)
+	}
+	file, err := os.Create("InitialInfo.txt")
+	if err != nil {
+		fmt.Println(err)
+	}
+	_, err = io.WriteString(file, string(cmd))
+	if err != nil {
+		fmt.Println(err)
+	}
+	file.Close()
+
+}
+func help() {
+	fmt.Println("exit: Exits the program")
+	fmt.Println("users: Gets a list of all users with a shell")
+	fmt.Println("passwd: Changes the password of all users to a set string")
+	fmt.Println("disable: Disables shell access for all users with a shell")
 }

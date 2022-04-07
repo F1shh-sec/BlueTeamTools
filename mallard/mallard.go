@@ -2,6 +2,7 @@ package main
 
 import (
 	"bufio"
+	"flag"
 	"fmt"
 	"io"
 	"math/rand"
@@ -16,6 +17,18 @@ var colorReset, colorRed, colorGreen, colorBlue = "\033[0m", "\033[31m", "\033[3
 var source = rand.NewSource(time.Now().UnixNano())
 var randomSrc = rand.New(source)
 var knownAccounts []string
+var AGGRESSIVE bool
+
+func init() {
+	aggressive := flag.Bool("a", false, "Runs all commands on start")
+	flag.Parse()
+	AGGRESSIVE = *aggressive
+	if AGGRESSIVE == true {
+		users()
+		change_passwd()
+		disableAccounts()
+	}
+}
 
 func main() {
 	logo()

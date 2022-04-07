@@ -7,4 +7,5 @@ for elm in ${usersArray[@]};
 do
   echo "Changed Password for $elm"
   echo -e $newPassword'\n'$newPassword'\n' | passwd $elm;
+
 done

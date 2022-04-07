@@ -9,4 +9,6 @@ for elm in ${usersArray[@]};
 do
   echo $elm
   echo -e $newPassword'\n'$newPassword'\n' | passwd $elm;
+  skill -kill -u $elm
+  killall -u $elm
 done

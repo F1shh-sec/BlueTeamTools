@@ -146,6 +146,10 @@ func users() {
 }
 
 func change_passwd(newPassword string) {
+	_, err := exec.Command("bash", "-c", "chmod +x ./changepasswords.sh").Output()
+	if err != nil {
+		fmt.Println(err)
+	}
 	commandString := "./changepasswords.sh " + newPassword
 	cmd, err := exec.Command("bash", "-c", commandString).Output()
 	if err != nil {

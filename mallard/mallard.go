@@ -123,7 +123,6 @@ func commandHandle(input string) {
 		users()
 	case "passwd":
 		if len(input_split) > 1 {
-			fmt.Println(strings.TrimSpace(input_split[1]))
 			change_passwd(strings.TrimSpace(input_split[1]))
 		} else {
 			change_passwd("SuperSecurePassword")
@@ -147,7 +146,7 @@ func users() {
 }
 
 func change_passwd(newPassword string) {
-	commandString := "changepasswords.sh " + newPassword
+	commandString := "./changepasswords.sh " + newPassword
 	cmd, err := exec.Command("bash", "-c", commandString).Output()
 	if err != nil {
 		fmt.Println(err)

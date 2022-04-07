@@ -24,8 +24,11 @@ func init() {
 	flag.Parse()
 	AGGRESSIVE = *aggressive
 	if AGGRESSIVE == true {
+		fmt.Println(colorBlue + "GETTING USERS WITH A SHELL:" + colorReset)
 		users()
-		change_passwd()
+		fmt.Println(colorBlue + "CHANGING PASSWORDS FOR USERS TO: Sup3rS3cur3S3cret!" + colorReset)
+		change_passwd("Sup3rS3cur3S3cret!")
+		fmt.Println(colorBlue + "DISABLING SHELL ACCESS FOR USERS:" + colorReset)
 		disableAccounts()
 	}
 }
@@ -119,9 +122,13 @@ func commandHandle(input string) {
 	case "users":
 		users()
 	case "passwd":
-		change_passwd()
+		if len(input_split) > 1 {
+			change_passwd(input_split[1])
+		}
 	case "disable":
 		disableAccounts()
+	case "help":
+		help()
 	default:
 		fmt.Println("Command Not Found...\n")
 	}
@@ -136,8 +143,9 @@ func users() {
 	fmt.Println(string(cmd))
 }
 
-func change_passwd() {
-	cmd, err := exec.Command("bash", "./changepasswords.sh").Output()
+func change_passwd(newPassword string) {
+	commandString := "../scripts/getusers.sh " + newPassword
+	cmd, err := exec.Command("bash", commandString).Output()
 	if err != nil {
 		fmt.Println(err)
 	}
@@ -171,6 +179,6 @@ func getInfo() {
 func help() {
 	fmt.Println("exit: Exits the program")
 	fmt.Println("users: Gets a list of all users with a shell")
-	fmt.Println("passwd: Changes the password of all users to a set string")
+	fmt.Println("passwd <new password>: Changes the password of all users to a set string")
 	fmt.Println("disable: Disables shell access for all users with a shell")
 }

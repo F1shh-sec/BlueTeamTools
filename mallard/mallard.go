@@ -230,6 +230,9 @@ func watchConnections() {
 
 		// CHECKS TO SEE IF A CONNECTION IS REMOVED
 		for _, elm := range initParsed {
+			if elm.name == "nc" {
+				fmt.Println("TESTING NC")
+			}
 			// If the new connection map has a elm of the old connection map
 			_, ok := NewConnectionMap[elm.name]
 			if ok == true {

@@ -170,15 +170,24 @@ func watchConnections() {
 		}
 		getConnsSplit := strings.Split(strings.TrimSpace(string(getNewConns)), "\n")
 		if !reflect.DeepEqual(initConnSplit, getConnsSplit) {
-			if len(getConnsSplit) > len(initConnSplit) {
-				newConns := getConnsSplit[len(initConnSplit):]
-				for _, elm := range newConns {
-					fmt.Println(colorBlue + "\nA CONNECTION HAS BEEN CREATED: " + colorRed + strings.TrimSpace(string(elm)) + colorReset)
-					printPrefix()
-				}
-			}
+			diff := difference(initConnSplit, getConnsSplit)
+			fmt.Println(diff)
+			initConnSplit = getConnsSplit
 		}
 	}
+}
+func difference(a, b []string) []string {
+	mb := make(map[string]struct{}, len(b))
+	for _, x := range b {
+		mb[x] = struct{}{}
+	}
+	var diff []string
+	for _, x := range a {
+		if _, found := mb[x]; !found {
+			diff = append(diff, x)
+		}
+	}
+	return diff
 }
 
 /**

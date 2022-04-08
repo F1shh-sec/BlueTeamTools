@@ -206,13 +206,14 @@ func watchConnections() {
 					// If they are not, we have a new process
 					fmt.Println(colorBlue + "New Connection Found: " + elm.name + colorReset)
 					connectionMap[elm.name] = elm.pid
-
+					initParsed = getConnParsed
 				}
 			} else {
 				// If the name is not in the list, We have a new process
 				fmt.Println(colorBlue + "New Connection Found: " + elm.name + colorReset)
 				// Add the new process to the list
 				connectionMap[elm.name] = elm.pid
+				initParsed = getConnParsed
 			}
 		}
 

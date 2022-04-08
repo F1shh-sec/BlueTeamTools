@@ -165,7 +165,6 @@ func parseConnections(connections []string) []connect {
 	for _, elm := range connections {
 		connection := strings.Split(string(elm), ":")
 		fmt.Println(connection)
-
 		pids := strings.Split(string(connection[0]), " ")
 		serviceName := connection[1]
 		newConnect := connect{pids, serviceName}
@@ -173,65 +172,33 @@ func parseConnections(connections []string) []connect {
 	}
 	return foundConnections
 }
+
 func watchConnections() {
 	getInitConns, err := exec.Command("bash", "../scripts/getconn.sh").Output()
 	if err != nil {
 		fmt.Println(err)
 	}
 	initConnSplit := strings.Split(strings.TrimSpace(string(getInitConns)), "\n")
-	fmt.Println("PARSING CONNECTIONS: ")
-	fmt.Println(parseConnections(initConnSplit))
-	fmt.Println("===================== ")
+	// Parses the initial Connection list
+	initParsed := parseConnections(initConnSplit)
+	fmt.Println(initParsed)
 	for {
 		getNewConns, err := exec.Command("bash", "../scripts/getconn.sh").Output()
 		if err != nil {
 			fmt.Println(err)
 		}
 		getConnsSplit := strings.Split(strings.TrimSpace(string(getNewConns)), "\n")
-		if !reflect.DeepEqual(initConnSplit, getConnsSplit) {
-			fmt.Println(initConnSplit)
-			fmt.Println(getConnsSplit)
-			if len(initConnSplit) < len(getConnsSplit) {
-				diff := difference(getConnsSplit, initConnSplit)
-				for _, elm := range diff {
-					fmt.Println("Diff: " + elm)
-					fmt.Println(colorBlue + "\nA NEW CONNECTION BEEN CREATED: " + colorRed + strings.TrimSpace(string(elm)) + colorReset)
-				}
-				initConnSplit = getConnsSplit
-				printPrefix()
-			} else if len(initConnSplit) > len(getConnsSplit) {
-				diff := difference(initConnSplit, getConnsSplit)
-				for _, elm := range diff {
-					fmt.Println("Diff: " + elm)
-					fmt.Println(colorBlue + "\nA CONNECTION HAS BEEN DROPPED: " + colorRed + strings.TrimSpace(string(elm)) + colorReset)
-				}
-				initConnSplit = getConnsSplit
-				printPrefix()
-			} else if len(initConnSplit) == len(getConnsSplit) {
-				diff := difference(initConnSplit, getConnsSplit)
-				for _, elm := range diff {
-					fmt.Println("Diff: " + elm)
-					fmt.Println(colorBlue + "\nA CONNECTION HAS BEEN CREATED: " + colorRed + strings.TrimSpace(string(elm)) + colorReset)
-				}
-				initConnSplit = getConnsSplit
-				printPrefix()
-			}
-		}
+		// Parses the new connection into the array
+		getConnParsed := parseConnections(getConnsSplit)
+		fmt.Println(getConnParsed)
+
+		/**
+		TODO: Write a function to compare getConn Parsed and InitParsed. Potentially rewrite the structure to map
+		TODO: the service to the pids. Then check to see if a value is in the map.
+		*/
+
 		time.Sleep(time.Duration(500) * time.Millisecond)
 	}
-}
-func difference(a, b []string) []string {
-	mb := make(map[string]struct{}, len(b))
-	for _, x := range b {
-		mb[x] = struct{}{}
-	}
-	var diff []string
-	for _, x := range a {
-		if _, found := mb[x]; !found {
-			diff = append(diff, x)
-		}
-	}
-	return diff
 }
 
 /**

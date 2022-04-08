@@ -222,22 +222,22 @@ func watchConnections() {
 			NewConnectionMap[elm.name] = elm.pid
 		}
 
-		fmt.Println(colorRed + "NEW CONNECTION MAP: " + colorReset)
-		fmt.Println(NewConnectionMap)
-		fmt.Println(colorRed + "=-=-=-=-=-=-=-=-=-=" + colorReset)
-		fmt.Println(colorGreen + "OLD CONNECTION MAP: " + colorReset)
-		fmt.Println(connectionMap)
-		fmt.Println(colorGreen + "=-=-=-=-=-=-=-=-=-=" + colorReset)
+		//fmt.Println(colorRed + "NEW CONNECTION MAP: " + colorReset)
+		//fmt.Println(NewConnectionMap)
+		//fmt.Println(colorRed + "=-=-=-=-=-=-=-=-=-=" + colorReset)
+		//fmt.Println(colorGreen + "OLD CONNECTION MAP: " + colorReset)
+		//fmt.Println(connectionMap)
+		//fmt.Println(colorGreen + "=-=-=-=-=-=-=-=-=-=" + colorReset)
 
 		// CHECKS TO SEE IF A CONNECTION IS REMOVED
 		for _, elm := range initParsed {
 			if elm.name == "nc" {
-				fmt.Println("TESTING NC")
+				//fmt.Println("TESTING NC")
 			}
 			// If the new connection map has a elm of the old connection map
 			_, ok := NewConnectionMap[elm.name]
 			if ok == true {
-				fmt.Println("Matching Element Detected: " + elm.name)
+				//fmt.Println("Matching Element Detected: " + elm.name)
 				// Check to see if the PID maps are =
 				if !reflect.DeepEqual(NewConnectionMap[elm.name], elm.pid) {
 					// If they are not, Then a process was removed and we need to update the connection map

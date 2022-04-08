@@ -321,7 +321,9 @@ func getInfo() {
 	if err != nil {
 		fmt.Println(err)
 	}
-	file, err := os.Create("InitialInfo.txt")
+	curtime := time.Now()
+	filename := "Info_" + string(curtime.Format("StampMilli"))
+	file, err := os.Create(filename)
 	if err != nil {
 		fmt.Println(err)
 	}

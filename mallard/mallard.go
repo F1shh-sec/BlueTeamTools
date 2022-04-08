@@ -205,18 +205,21 @@ func watchConnections() {
 				if !reflect.DeepEqual(connectionMap[elm.name], elm.pid) {
 					// If they are not, we have a new process
 					if len(connectionMap[elm.name]) > len(elm.pid) {
-						fmt.Println(colorBlue + "Connection Removed: " + elm.name + colorReset)
+						fmt.Println(colorBlue + "Connection Removed: " + colorRed + elm.name + colorReset)
+						printPrefix()
 						connectionMap[elm.name] = elm.pid
 						initParsed = getConnParsed
 					} else {
-						fmt.Println(colorBlue + "New Connection Found: " + elm.name + colorReset)
+						fmt.Println(colorBlue + "New Connection Found: " + colorRed + elm.name + colorReset)
+						printPrefix()
 						connectionMap[elm.name] = elm.pid
 						initParsed = getConnParsed
 					}
 				}
 			} else {
 				// If the name is not in the list, We have a new process
-				fmt.Println(colorBlue + "New Connection Found: " + elm.name + colorReset)
+				fmt.Println(colorBlue + "New Connection Found: " + colorRed + elm.name + colorReset)
+				printPrefix()
 				// Add the new process to the list
 				connectionMap[elm.name] = elm.pid
 				initParsed = getConnParsed
@@ -228,18 +231,8 @@ func watchConnections() {
 			NewConnectionMap[elm.name] = elm.pid
 		}
 
-		//fmt.Println(colorRed + "NEW CONNECTION MAP: " + colorReset)
-		//fmt.Println(NewConnectionMap)
-		//fmt.Println(colorRed + "=-=-=-=-=-=-=-=-=-=" + colorReset)
-		//fmt.Println(colorGreen + "OLD CONNECTION MAP: " + colorReset)
-		//fmt.Println(connectionMap)
-		//fmt.Println(colorGreen + "=-=-=-=-=-=-=-=-=-=" + colorReset)
-
 		// CHECKS TO SEE IF A CONNECTION IS REMOVED
 		for _, elm := range initParsed {
-			if elm.name == "nc" {
-				//fmt.Println("TESTING NC")
-			}
 			// If the new connection map has a elm of the old connection map
 			_, ok := NewConnectionMap[elm.name]
 			if ok == true {
@@ -247,12 +240,14 @@ func watchConnections() {
 				// Check to see if the PID maps are =
 				if !reflect.DeepEqual(NewConnectionMap[elm.name], elm.pid) {
 					// If they are not, Then a process was removed and we need to update the connection map
-					fmt.Println(colorBlue + "Connection Removed: " + elm.name + colorReset)
+					fmt.Println(colorBlue + "\nConnection Removed: " + colorRed + elm.name + colorReset)
 					connectionMap[elm.name] = elm.pid
+					printPrefix()
 				}
 			} else {
 				// If the name is not in the list, Then the process was removed
-				fmt.Println(colorBlue + "Connection Removed: " + elm.name + colorReset)
+				fmt.Println(colorBlue + "\nConnection Removed: " + colorRed + elm.name + colorReset)
+				printPrefix()
 				// Add the new process to the list
 				delete(connectionMap, elm.name)
 			}

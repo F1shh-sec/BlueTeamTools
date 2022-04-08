@@ -23,7 +23,7 @@ const (
 	cLCyan  = "\033[96m"
 	cYellow = "\033[33m"
 	cLGrey  = "\033[37m"
-	cBrown  = "\033[94m"
+	cBrown  = "\033[38;5;94m"
 )
 
 var source = rand.NewSource(time.Now().UnixNano())
@@ -61,8 +61,8 @@ Prints out the logo on startup
 func logo() {
 	fmt.Println(cGreen + `   ▄▄▄▄███▄▄▄▄      ▄████████  ▄█        ▄█          ▄████████    ▄████████ ████████▄  
  ` + cGreen + `▄██▀▀▀███▀▀▀██▄   ███    ███ ███       ███         ███    ███   ███    ███ ███   ▀███ 
- ` + cGreen + `███   ███   ███   ███    ███ ███       ███         ███    ███   █` + cYellow + `██    ███ ███    ███ 
- ` + cGreen + `███   ███   ███   ███    ███ ███       ███         ███    ███  ▄█` + cYellow + `██▄▄▄▄██▀ ███    ███ 
+ ` + cGreen + `███   ███   ███   ███    ███ ███       ███         ███    ███   ███    ███ ███    ███ 
+ ` + cGreen + `███   ███   ███   ███    ███ ███       ███         ███    ███  ▄███▄▄▄▄██▀ ███    ███ 
  ` + cLGrey + `███   ███   ███ ▀███████████ ███       ███       ▀███████████ ▀▀███▀▀▀▀▀   ███    ███ 
  ` + cBrown + `███   ███   ███   ███    ███ ███       ███         ███    ███ ▀███████████ ███    ███ 
  ` + cBrown + `███   ███   ███   ███    ███ ███▌    ▄ ███▌    ▄   ███    ███   ███    ███ ███   ▄███ 
@@ -70,12 +70,15 @@ func logo() {
                               ▀         ▀                        ███    ███` + cReset)
 
 	messages := []string{
-		"Any machine can become unhackable if you turn it off!",
+		"Any machine can become un-hackable if you turn it off!",
 		"This is why you take snapshots.",
 		"Quack",
 		"Now in HD",
 		"Try not to brick your box.",
-		"Exiting Program.\nFuck, Wrong message."}
+		"Exiting Program.\nFuck, wrong message.",
+		"Your friendly neighborhood watchduck.",
+		"Sniff packets not glue.",
+	}
 	ranMessage := randomSrc.Intn(len(messages))
 	fmt.Println(cRed + messages[ranMessage] + cReset)
 }

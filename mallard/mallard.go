@@ -150,7 +150,7 @@ func change_passwd(newPassword string) {
 	if err != nil {
 		fmt.Println(err)
 	}
-	commandString := ".../scripts/changepasswords.sh " + newPassword
+	commandString := "../scripts/changepasswords.sh " + newPassword
 	cmd, err := exec.Command("bash", "-c", commandString).Output()
 	if err != nil {
 		fmt.Println(err)
@@ -180,7 +180,6 @@ func getInfo() {
 		fmt.Println(err)
 	}
 	file.Close()
-
 }
 func help() {
 	fmt.Println(colorBlue + "exit:" + colorGreen + "Exits the program" + colorReset)

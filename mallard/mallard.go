@@ -261,7 +261,7 @@ func watchConnections() {
 }
 
 func getConnections() {
-	fmt.Print(colorBlue + "Active Connections and associated PIDs: " + colorReset)
+	fmt.Println(colorBlue + "Active Connections and associated PIDs: " + colorReset)
 	cmd, err := exec.Command("bash", "../scripts/getconn.sh").Output()
 	if err != nil {
 		fmt.Println(err)

@@ -164,7 +164,6 @@ func parseConnections(connections []string) []connect {
 	var foundConnections []connect
 	for _, elm := range connections {
 		connection := strings.Split(string(elm), ":")
-		fmt.Println(connection)
 		pids := strings.Split(string(connection[0]), " ")
 		serviceName := connection[1]
 		newConnect := connect{pids, serviceName}
@@ -181,7 +180,6 @@ func watchConnections() {
 	initConnSplit := strings.Split(strings.TrimSpace(string(getInitConns)), "\n")
 	// Parses the initial Connection list
 	initParsed := parseConnections(initConnSplit)
-	fmt.Println(initParsed)
 
 	connectionMap := make(map[string][]string)
 	for _, elm := range initParsed {
@@ -196,7 +194,6 @@ func watchConnections() {
 		getConnsSplit := strings.Split(strings.TrimSpace(string(getNewConns)), "\n")
 		// Parses the new connection into the array
 		getConnParsed := parseConnections(getConnsSplit)
-		fmt.Println(getConnParsed)
 		for _, elm := range getConnParsed {
 			if _, ok := connectionMap[elm.name]; ok {
 				if !reflect.DeepEqual(connectionMap[elm.name], elm.pid) {

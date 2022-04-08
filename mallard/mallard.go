@@ -205,12 +205,12 @@ func watchConnections() {
 				if !reflect.DeepEqual(connectionMap[elm.name], elm.pid) {
 					// If they are not, we have a new process
 					if len(connectionMap[elm.name]) > len(elm.pid) {
-						fmt.Println(colorBlue + "Connection Removed: " + colorRed + elm.name + colorReset)
+						fmt.Println(colorBlue + "\nConnection Removed: " + colorRed + elm.name + colorReset)
 						printPrefix()
 						connectionMap[elm.name] = elm.pid
 						initParsed = getConnParsed
 					} else {
-						fmt.Println(colorBlue + "New Connection Found: " + colorRed + elm.name + colorReset)
+						fmt.Println(colorBlue + "\nNew Connection Found: " + colorRed + elm.name + colorReset)
 						printPrefix()
 						connectionMap[elm.name] = elm.pid
 						initParsed = getConnParsed
@@ -218,7 +218,7 @@ func watchConnections() {
 				}
 			} else {
 				// If the name is not in the list, We have a new process
-				fmt.Println(colorBlue + "New Connection Found: " + colorRed + elm.name + colorReset)
+				fmt.Println(colorBlue + "\nNew Connection Found: " + colorRed + elm.name + colorReset)
 				printPrefix()
 				// Add the new process to the list
 				connectionMap[elm.name] = elm.pid

@@ -11,3 +11,14 @@ This tool is not a general purpose Anti-virus/Anti-malware tool. The rules this 
 
 This tool comes with no warranty or support, use at your own risk.
 
+# USAGE:
+|Command| Description|
+|-|-|
+|passwd|Changes all users passwords|
+|users|Gets a list of all users who have a usable shell|
+|disable|Disables shell access for all users with a shell|
+
+
+|Flag|Description|
+|-|-|
+|-a|Aggressive mode. Runs user, passwd, and disable once the program launches|

@@ -269,7 +269,9 @@ func getConnections() {
 	cmdSplit := strings.Split(string(cmd), "\n")
 	for _, elm := range cmdSplit {
 		commandSplit := strings.Split(elm, ":")
-		fmt.Println(colorRed + commandSplit[0] + colorReset + ":" + colorGreen + commandSplit[1] + colorReset)
+		//fmt.Println(colorRed + commandSplit[0] + colorReset + ":" + colorGreen + commandSplit[1] + colorReset)
+		fmt.Print("LINE: ")
+		fmt.Println(commandSplit)
 	}
 }
 

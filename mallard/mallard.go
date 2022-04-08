@@ -199,7 +199,8 @@ func watchConnections() {
 		// For each connection in the new command
 		for _, elm := range getConnParsed {
 			// Check if we have the name of the service in the list
-			if _, ok := connectionMap[elm.name]; ok {
+			_, ok := connectionMap[elm.name]
+			if ok {
 				// If we do, Check to see if the pids are the same
 				if !reflect.DeepEqual(connectionMap[elm.name], elm.pid) {
 					// If they are not, we have a new process
@@ -222,7 +223,8 @@ func watchConnections() {
 		// CHECKS TO SEE IF A CONNECTION IS REMOVED
 		for _, elm := range initParsed {
 			// If the new connection map has a elm of the old connection map
-			if _, ok := NewConnectionMap[elm.name]; ok {
+			_, ok := NewConnectionMap[elm.name]
+			if ok == true {
 				// Check to see if the PID maps are =
 				if !reflect.DeepEqual(NewConnectionMap[elm.name], elm.pid) {
 					// If they are not, Then a process was removed and we need to update the connection map

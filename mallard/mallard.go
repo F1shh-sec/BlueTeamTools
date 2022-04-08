@@ -182,6 +182,12 @@ func watchConnections() {
 	// Parses the initial Connection list
 	initParsed := parseConnections(initConnSplit)
 	fmt.Println(initParsed)
+
+	connectionMap := make(map[string][]string)
+	for _, elm := range initParsed {
+		connectionMap[elm.name] = elm.pid
+	}
+
 	for {
 		getNewConns, err := exec.Command("bash", "../scripts/getconn.sh").Output()
 		if err != nil {
@@ -191,7 +197,17 @@ func watchConnections() {
 		// Parses the new connection into the array
 		getConnParsed := parseConnections(getConnsSplit)
 		fmt.Println(getConnParsed)
-
+		for _, elm := range getConnParsed {
+			if _, ok := connectionMap[elm.name]; ok {
+				if !reflect.DeepEqual(connectionMap[elm.name], elm.pid) {
+					fmt.Println("New Connection Found!")
+					connectionMap[elm.name] = elm.pid
+				}
+			} else {
+				fmt.Println("New Connection Found!")
+				connectionMap[elm.name] = elm.pid
+			}
+		}
 		/**
 		TODO: Write a function to compare getConn Parsed and InitParsed. Potentially rewrite the structure to map
 		TODO: the service to the pids. Then check to see if a value is in the map.

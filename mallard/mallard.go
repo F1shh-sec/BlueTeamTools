@@ -266,7 +266,7 @@ func getConnections() {
 	if err != nil {
 		fmt.Println(err)
 	}
-	cmdSplit := strings.Split(string(cmd), "\n")
+	cmdSplit := strings.Split(strings.TrimSpace(string(cmd)), "\n")
 	for _, elm := range cmdSplit {
 		commandSplit := strings.Split(elm, ":")
 		//fmt.Println(colorRed + commandSplit[0] + colorReset + ":" + colorGreen + commandSplit[1] + colorReset)

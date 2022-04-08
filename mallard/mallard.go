@@ -179,7 +179,6 @@ func watchConnections() {
 					fmt.Println(colorBlue + "\nA NEW CONNECTION BEEN CREATED: " + colorRed + strings.TrimSpace(string(elm)) + ":" + string(newConnPid) + colorReset)
 				}
 				initConnSplit = getConnsSplit
-
 				printPrefix()
 			} else {
 				diff := difference(initConnSplit, getConnsSplit)

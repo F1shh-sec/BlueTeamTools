@@ -204,13 +204,13 @@ func watchConnections() {
 				// If we do, Check to see if the pids are the same
 				if !reflect.DeepEqual(connectionMap[elm.name], elm.pid) {
 					// If they are not, we have a new process
-					fmt.Println("New Connection Found: " + elm.name)
+					fmt.Println(colorBlue + "New Connection Found: " + elm.name + colorReset)
 					connectionMap[elm.name] = elm.pid
 
 				}
 			} else {
 				// If the name is not in the list, We have a new process
-				fmt.Println("New Connection Found: " + elm.name)
+				fmt.Println(colorBlue + "New Connection Found: " + elm.name + colorReset)
 				// Add the new process to the list
 				connectionMap[elm.name] = elm.pid
 			}
@@ -229,12 +229,12 @@ func watchConnections() {
 				// Check to see if the PID maps are =
 				if !reflect.DeepEqual(NewConnectionMap[elm.name], elm.pid) {
 					// If they are not, Then a process was removed and we need to update the connection map
-					fmt.Println("Connection Removed: " + elm.name)
+					fmt.Println(colorBlue + "Connection Removed: " + elm.name + colorReset)
 					connectionMap[elm.name] = elm.pid
 				}
 			} else {
 				// If the name is not in the list, Then the process was removed
-				fmt.Println("Connection Removed: " + elm.name)
+				fmt.Println(colorBlue + "Connection Removed: " + elm.name + colorReset)
 				// Add the new process to the list
 				delete(connectionMap, elm.name)
 			}

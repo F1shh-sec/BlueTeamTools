@@ -110,8 +110,6 @@ func commandHandle(input string) {
 		getInfo()
 	case "help":
 		help()
-	case "conn":
-		watchConnections()
 	default:
 		fmt.Println("Command Not Found...\n")
 	}
@@ -170,7 +168,7 @@ func watchConnections() {
 		}
 		getConnsSplit := strings.Split(strings.TrimSpace(string(getNewConns)), "\n")
 		if !reflect.DeepEqual(initConnSplit, getConnsSplit) {
-			diff := difference(initConnSplit, getConnsSplit)
+			diff := difference(getConnsSplit, initConnSplit)
 			fmt.Println(diff)
 			initConnSplit = getConnsSplit
 		}

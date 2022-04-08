@@ -168,10 +168,13 @@ func watchConnections() {
 		}
 		getConnsSplit := strings.Split(strings.TrimSpace(string(getNewConns)), "\n")
 		if !reflect.DeepEqual(initConnSplit, getConnsSplit) {
+
+			fmt.Println(initConnSplit)
+			fmt.Println(getConnsSplit)
 			if len(initConnSplit) < len(getConnsSplit) {
 				diff := difference(getConnsSplit, initConnSplit)
 				for _, elm := range diff {
-					fmt.Println(elm)
+					fmt.Println("Diff: " + elm)
 					fmt.Println(colorBlue + "\nA NEW CONNECTION BEEN CREATED: " + colorRed + strings.TrimSpace(string(elm)) + colorReset)
 				}
 				initConnSplit = getConnsSplit
@@ -179,21 +182,22 @@ func watchConnections() {
 			} else if len(initConnSplit) > len(getConnsSplit) {
 				diff := difference(initConnSplit, getConnsSplit)
 				for _, elm := range diff {
-					fmt.Println(elm)
+					fmt.Println("Diff: " + elm)
 					fmt.Println(colorBlue + "\nA CONNECTION HAS BEEN DROPPED: " + colorRed + strings.TrimSpace(string(elm)) + colorReset)
 				}
 				initConnSplit = getConnsSplit
 				printPrefix()
-			} else {
+			} else if len(initConnSplit) == len(getConnsSplit) {
 				diff := difference(initConnSplit, getConnsSplit)
 				for _, elm := range diff {
-					fmt.Println(elm)
+					fmt.Println("Diff: " + elm)
 					fmt.Println(colorBlue + "\nA CONNECTION HAS BEEN CREATED: " + colorRed + strings.TrimSpace(string(elm)) + colorReset)
 				}
 				initConnSplit = getConnsSplit
 				printPrefix()
 			}
 		}
+		time.Sleep(time.Duration(500) * time.Millisecond)
 	}
 }
 func difference(a, b []string) []string {

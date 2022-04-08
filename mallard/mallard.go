@@ -70,6 +70,7 @@ func mallard() {
 	getInfo()
 	reader := bufio.NewReader(os.Stdin)
 	go watchAccounts()
+	go watchConnections()
 	for {
 		printPrefix()
 		input, _ := reader.ReadString('\n')
@@ -157,12 +158,27 @@ func watchAccounts() {
 }
 
 func watchConnections() {
-	GetInitialConnections, err := exec.Command("bash", "-c", "../scripts/getconn.sh").Output()
+	getInitConns, err := exec.Command("bash", "../scripts/getconn.sh").Output()
 	if err != nil {
 		fmt.Println(err)
 	}
-	getUserSplit := strings.Split(strings.TrimSpace(string(GetInitialConnections)), "\n")
-	fmt.Println(getUserSplit)
+	initConnSplit := strings.Split(strings.TrimSpace(string(getInitConns)), "\n")
+	for {
+		getNewConns, err := exec.Command("bash", "../scripts/getconn.sh").Output()
+		if err != nil {
+			fmt.Println(err)
+		}
+		getConnsSplit := strings.Split(strings.TrimSpace(string(getNewConns)), "\n")
+		if !reflect.DeepEqual(initConnSplit, getConnsSplit) {
+			if len(getConnsSplit) > len(initConnSplit) {
+				newConns := getConnsSplit[len(initConnSplit):]
+				for _, elm := range newConns {
+					fmt.Println(colorBlue + "\nA CONNECTION HAS BEEN CREATED: " + colorRed + strings.TrimSpace(string(elm)) + colorReset)
+					printPrefix()
+				}
+			}
+		}
+	}
 }
 
 /**

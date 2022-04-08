@@ -332,6 +332,7 @@ func getInfo() {
 		fmt.Println(err)
 	}
 	file.Close()
+	fmt.Println(colorBlue + "Created File:" + colorGreen + filename + colorReset)
 }
 
 /**

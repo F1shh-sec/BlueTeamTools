@@ -171,14 +171,24 @@ func watchConnections() {
 			if len(initConnSplit) < len(getConnsSplit) {
 				diff := difference(getConnsSplit, initConnSplit)
 				for _, elm := range diff {
+					fmt.Println(elm)
 					fmt.Println(colorBlue + "\nA NEW CONNECTION BEEN CREATED: " + colorRed + strings.TrimSpace(string(elm)) + colorReset)
+				}
+				initConnSplit = getConnsSplit
+				printPrefix()
+			} else if len(initConnSplit) > len(getConnsSplit) {
+				diff := difference(initConnSplit, getConnsSplit)
+				for _, elm := range diff {
+					fmt.Println(elm)
+					fmt.Println(colorBlue + "\nA CONNECTION HAS BEEN DROPPED: " + colorRed + strings.TrimSpace(string(elm)) + colorReset)
 				}
 				initConnSplit = getConnsSplit
 				printPrefix()
 			} else {
 				diff := difference(initConnSplit, getConnsSplit)
 				for _, elm := range diff {
-					fmt.Println(colorBlue + "\nA CONNECTION HAS BEEN DROPPED: " + colorRed + strings.TrimSpace(string(elm)) + colorReset)
+					fmt.Println(elm)
+					fmt.Println(colorBlue + "\nA CONNECTION HAS BEEN CREATED: " + colorRed + strings.TrimSpace(string(elm)) + colorReset)
 				}
 				initConnSplit = getConnsSplit
 				printPrefix()

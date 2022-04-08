@@ -220,6 +220,12 @@ func watchConnections() {
 			NewConnectionMap[elm.name] = elm.pid
 		}
 
+		fmt.Println("NEW CONNECTION MAP: ")
+		fmt.Println(NewConnectionMap)
+		fmt.Println("=-=-=-=-=-=-=-=-=-=")
+		fmt.Println("OLD CONNECTION MAP: ")
+		fmt.Println(connectionMap)
+		fmt.Println("=-=-=-=-=-=-=-=-=-=")
 		// CHECKS TO SEE IF A CONNECTION IS REMOVED
 		for _, elm := range initParsed {
 			// If the new connection map has a elm of the old connection map

@@ -322,7 +322,7 @@ func getInfo() {
 		fmt.Println(err)
 	}
 	curtime := time.Now()
-	filename := "Info_" + string(curtime.Format("StampMilli"))
+	filename := "Info_" + string(curtime.Format("Jan _2 15:04:05.000"))
 	file, err := os.Create(filename)
 	if err != nil {
 		fmt.Println(err)

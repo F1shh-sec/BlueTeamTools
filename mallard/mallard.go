@@ -165,8 +165,8 @@ func watchAccounts() {
 func parseConnections(connections []string) []connect {
 	var foundConnections []connect
 	for _, elm := range connections {
-		connection := strings.Split(string(elm), ":")
-		pids := strings.Split(string(connection[0]), " ")
+		connection := strings.Split(strings.TrimSpace(string(elm)), ":")
+		pids := strings.Split(strings.TrimSpace(string(connection[0])), " ")
 		serviceName := connection[1]
 		newConnect := connect{pids, serviceName}
 		foundConnections = append(foundConnections, newConnect)

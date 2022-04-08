@@ -233,6 +233,7 @@ func watchConnections() {
 			// If the new connection map has a elm of the old connection map
 			_, ok := NewConnectionMap[elm.name]
 			if ok == true {
+				fmt.Println("Matching Element Detected: " + elm.name)
 				// Check to see if the PID maps are =
 				if !reflect.DeepEqual(NewConnectionMap[elm.name], elm.pid) {
 					// If they are not, Then a process was removed and we need to update the connection map

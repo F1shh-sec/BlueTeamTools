@@ -203,12 +203,12 @@ func watchConnections() {
 				// If we do, Check to see if the pids are the same
 				if !reflect.DeepEqual(connectionMap[elm.name], elm.pid) {
 					// If they are not, we have a new process
-					fmt.Println("New Connection Found!" + elm.name)
+					fmt.Println("New Connection Found: " + elm.name)
 					connectionMap[elm.name] = elm.pid
 				}
 			} else {
 				// If the name is not in the list, We have a new process
-				fmt.Println("New Connection Found!" + elm.name)
+				fmt.Println("New Connection Found: " + elm.name)
 				// Add the new process to the list
 				connectionMap[elm.name] = elm.pid
 			}
@@ -221,17 +221,17 @@ func watchConnections() {
 
 		// CHECKS TO SEE IF A CONNECTION IS REMOVED
 		for _, elm := range initParsed {
-			// Check if we have the name of the service in the list
+			// If the new connection map has a elm of the old connection map
 			if _, ok := NewConnectionMap[elm.name]; ok {
-				// If we do, Check to see if the pids are the same
+				// Check to see if the PID maps are =
 				if !reflect.DeepEqual(NewConnectionMap[elm.name], elm.pid) {
 					// If they are not, Then a process was removed and we need to update the connection map
-					fmt.Println("Connection Removed" + elm.name)
+					fmt.Println("Connection Removed: " + elm.name)
 					connectionMap[elm.name] = elm.pid
 				}
 			} else {
 				// If the name is not in the list, Then the process was removed
-				fmt.Println("Connection Removed" + elm.name)
+				fmt.Println("Connection Removed: " + elm.name)
 				// Add the new process to the list
 				delete(connectionMap, elm.name)
 			}

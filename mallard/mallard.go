@@ -206,6 +206,7 @@ func watchConnections() {
 					// If they are not, we have a new process
 					fmt.Println("New Connection Found: " + elm.name)
 					connectionMap[elm.name] = elm.pid
+
 				}
 			} else {
 				// If the name is not in the list, We have a new process
@@ -220,12 +221,6 @@ func watchConnections() {
 			NewConnectionMap[elm.name] = elm.pid
 		}
 
-		fmt.Println("NEW CONNECTION MAP: ")
-		fmt.Println(NewConnectionMap)
-		fmt.Println("=-=-=-=-=-=-=-=-=-=")
-		fmt.Println("OLD CONNECTION MAP: ")
-		fmt.Println(connectionMap)
-		fmt.Println("=-=-=-=-=-=-=-=-=-=")
 		// CHECKS TO SEE IF A CONNECTION IS REMOVED
 		for _, elm := range initParsed {
 			// If the new connection map has a elm of the old connection map
@@ -250,7 +245,7 @@ func watchConnections() {
 		TODO: the service to the pids. Then check to see if a value is in the map.
 		*/
 
-		time.Sleep(time.Duration(500) * time.Millisecond)
+		time.Sleep(time.Duration(5000) * time.Millisecond)
 	}
 }
 

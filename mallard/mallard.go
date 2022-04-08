@@ -155,12 +155,33 @@ func watchAccounts() {
 
 }
 
+type connect struct {
+	pid  []string
+	name string
+}
+
+func parseConnections(connections []string) []connect {
+	var foundConnections []connect
+	for _, elm := range connections {
+		connection := strings.Split(string(elm), ":")
+		fmt.Println(connection)
+
+		pids := strings.Split(string(connection[0]), " ")
+		serviceName := connection[1]
+		newConnect := connect{pids, serviceName}
+		foundConnections = append(foundConnections, newConnect)
+	}
+	return foundConnections
+}
 func watchConnections() {
 	getInitConns, err := exec.Command("bash", "../scripts/getconn.sh").Output()
 	if err != nil {
 		fmt.Println(err)
 	}
 	initConnSplit := strings.Split(strings.TrimSpace(string(getInitConns)), "\n")
+	fmt.Println("PARSING CONNECTIONS: ")
+	fmt.Println(parseConnections(initConnSplit))
+	fmt.Println("===================== ")
 	for {
 		getNewConns, err := exec.Command("bash", "../scripts/getconn.sh").Output()
 		if err != nil {
@@ -168,7 +189,6 @@ func watchConnections() {
 		}
 		getConnsSplit := strings.Split(strings.TrimSpace(string(getNewConns)), "\n")
 		if !reflect.DeepEqual(initConnSplit, getConnsSplit) {
-
 			fmt.Println(initConnSplit)
 			fmt.Println(getConnsSplit)
 			if len(initConnSplit) < len(getConnsSplit) {

@@ -19,6 +19,11 @@ var randomSrc = rand.New(source)
 var knownAccounts []string
 var AGGRESSIVE bool
 
+type connect struct {
+	pid  []string
+	name string
+}
+
 func init() {
 	aggressive := flag.Bool("a", false, "Runs all commands on start")
 	flag.Parse()
@@ -157,11 +162,6 @@ func watchAccounts() {
 
 }
 
-type connect struct {
-	pid  []string
-	name string
-}
-
 func parseConnections(connections []string) []connect {
 	var foundConnections []connect
 	for _, elm := range connections {
@@ -261,7 +261,7 @@ func watchConnections() {
 }
 
 func getConnections() {
-	fmt.Print("Users with shell access: ")
+	fmt.Print(colorBlue + "Active Connections and associated PIDs: " + colorReset)
 	cmd, err := exec.Command("bash", "../scripts/getconn.sh").Output()
 	if err != nil {
 		fmt.Println(err)
@@ -337,5 +337,6 @@ func help() {
 	fmt.Println(colorBlue + "passwd <new password>:" + colorGreen + " Changes the password of all users to a set string" + colorReset)
 	fmt.Println(colorBlue + "disable:" + colorGreen + " Disables shell access for all users with a shell" + colorReset)
 	fmt.Println(colorBlue + "info:" + colorGreen + " Gets the initial state of the machine" + colorReset)
+	fmt.Println(colorBlue + "conn:" + colorGreen + " Prints out active connections and the associated PIDs" + colorReset)
 	fmt.Println()
 }

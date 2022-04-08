@@ -38,6 +38,9 @@ func main() {
 	mallard()
 }
 
+/**
+Prints out the logo on startup
+*/
 func logo() {
 	fmt.Println(colorBlue + `   ▄▄▄▄███▄▄▄▄      ▄████████  ▄█        ▄█          ▄████████    ▄████████ ████████▄  
  ▄██▀▀▀███▀▀▀██▄   ███    ███ ███       ███         ███    ███   ███    ███ ███   ▀███ 
@@ -60,6 +63,9 @@ func logo() {
 	fmt.Println(colorRed + messages[ranMessage] + colorReset)
 }
 
+/**
+Main function that starts the watchers and command handler
+*/
 func mallard() {
 	getInfo()
 	reader := bufio.NewReader(os.Stdin)
@@ -72,10 +78,47 @@ func mallard() {
 
 }
 
+/**
+Prints the command prefix when called
+*/
 func printPrefix() {
 	fmt.Print(colorGreen + "# " + colorReset)
 }
 
+/**
+Command Handler
+*/
+func commandHandle(input string) {
+	input_split := strings.Split(input, " ")
+	input_trimmed := strings.TrimSpace(input_split[0])
+	switch input_trimmed {
+	case "exit":
+		fmt.Println(colorRed + "Exiting Program." + colorReset)
+		os.Exit(1)
+	case "users":
+		users()
+	case "passwd":
+		if len(input_split) > 1 {
+			change_passwd(strings.TrimSpace(input_split[1]))
+		} else {
+			change_passwd("SuperSecurePassword")
+		}
+	case "disable":
+		disableAccounts()
+	case "info":
+		getInfo()
+	case "help":
+		help()
+	case "conn":
+		watchConnections()
+	default:
+		fmt.Println("Command Not Found...\n")
+	}
+}
+
+/**
+Watcher that prevents new account creation
+*/
 func watchAccounts() {
 	GetInitialUsers, err := exec.Command("bash", "-c", "mapfile -t usersArray < <(awk -F\":\" '{print $1}' /etc/passwd);echo \"${usersArray[@]}\"\n").Output()
 	if err != nil {
@@ -112,30 +155,19 @@ func watchAccounts() {
 	}
 
 }
-func commandHandle(input string) {
-	input_split := strings.Split(input, " ")
-	input_trimmed := strings.TrimSpace(input_split[0])
-	switch input_trimmed {
-	case "exit":
-		fmt.Println(colorRed + "Exiting Program." + colorReset)
-		os.Exit(1)
-	case "users":
-		users()
-	case "passwd":
-		if len(input_split) > 1 {
-			change_passwd(strings.TrimSpace(input_split[1]))
-		} else {
-			change_passwd("SuperSecurePassword")
-		}
-	case "disable":
-		disableAccounts()
-	case "help":
-		help()
-	default:
-		fmt.Println("Command Not Found...\n")
+
+func watchConnections() {
+	GetInitialConnections, err := exec.Command("bash", "-c", "../scripts/getconn.sh").Output()
+	if err != nil {
+		fmt.Println(err)
 	}
+	getUserSplit := strings.Split(strings.TrimSpace(string(GetInitialConnections)), "\n")
+	fmt.Println(getUserSplit)
 }
 
+/**
+Calls the get users script
+*/
 func users() {
 	fmt.Print("Users with shell access: ")
 	cmd, err := exec.Command("bash", "../scripts/getusers.sh").Output()
@@ -145,7 +177,11 @@ func users() {
 	fmt.Println(string(cmd))
 }
 
+/**
+Calls the change password script
+*/
 func change_passwd(newPassword string) {
+	// Makes sure the script has run permissions
 	_, err := exec.Command("bash", "-c", "chmod +x ../scripts/changepasswords.sh").Output()
 	if err != nil {
 		fmt.Println(err)
@@ -158,6 +194,9 @@ func change_passwd(newPassword string) {
 	fmt.Println(string(cmd))
 }
 
+/**
+Disables accounts
+*/
 func disableAccounts() {
 	cmd, err := exec.Command("bash", "../scripts/disableusers.sh").Output()
 	if err != nil {
@@ -166,6 +205,9 @@ func disableAccounts() {
 	fmt.Println(string(cmd))
 }
 
+/**
+Runs a script to get a lot of useful information
+*/
 func getInfo() {
 	cmd, err := exec.Command("bash", "../scripts/infocollect.sh").Output()
 	if err != nil {
@@ -181,10 +223,15 @@ func getInfo() {
 	}
 	file.Close()
 }
+
+/**
+Prints out help
+*/
 func help() {
 	fmt.Println(colorBlue + "exit:" + colorGreen + "Exits the program" + colorReset)
 	fmt.Println(colorBlue + "users:" + colorGreen + " Gets a list of all users with a shell" + colorReset)
 	fmt.Println(colorBlue + "passwd <new password>:" + colorGreen + " Changes the password of all users to a set string" + colorReset)
 	fmt.Println(colorBlue + "disable:" + colorGreen + " Disables shell access for all users with a shell" + colorReset)
+	fmt.Println(colorBlue + "info:" + colorGreen + " Gets the initial state of the machine" + colorReset)
 	fmt.Println()
 }

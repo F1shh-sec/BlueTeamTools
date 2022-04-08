@@ -251,14 +251,10 @@ func watchConnections() {
 				delete(connectionMap, elm.name)
 			}
 		}
-
-		/**
-		TODO: Write a function to compare getConn Parsed and InitParsed. Potentially rewrite the structure to map
-		TODO: the service to the pids. Then check to see if a value is in the map.
-		*/
-
-		time.Sleep(time.Duration(5000) * time.Millisecond)
+		initParsed = getConnParsed
+		time.Sleep(time.Duration(500) * time.Millisecond)
 	}
+
 }
 
 /**

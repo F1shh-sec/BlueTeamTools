@@ -13,7 +13,7 @@ import (
 	"time"
 )
 
-var colorReset, colorRed, colorGreen, colorBlue = "\033[0m", "\033[31m", "\033[32m", "\033[34m"
+var cReset, cRed, cGreen, cBlue, cCyan, cLBlue, cLCyan = "\033[0m", "\033[31m", "\033[32m", "\033[34m", "\033[36m", "\033[94m", "\033[96m"
 var source = rand.NewSource(time.Now().UnixNano())
 var randomSrc = rand.New(source)
 var knownAccounts []string
@@ -29,11 +29,11 @@ func init() {
 	flag.Parse()
 	AGGRESSIVE = *aggressive
 	if AGGRESSIVE == true {
-		fmt.Println(colorBlue + "GETTING USERS WITH A SHELL:" + colorReset)
+		fmt.Println(cBlue + "GETTING USERS WITH A SHELL:" + cReset)
 		users()
-		fmt.Println(colorBlue + "CHANGING PASSWORDS FOR USERS TO: Sup3rS3cur3S3cret!" + colorReset)
+		fmt.Println(cBlue + "CHANGING PASSWORDS FOR USERS TO: Sup3rS3cur3S3cret!" + cReset)
 		change_passwd("Sup3rS3cur3S3cret!")
-		fmt.Println(colorBlue + "DISABLING SHELL ACCESS FOR USERS:" + colorReset)
+		fmt.Println(cBlue + "DISABLING SHELL ACCESS FOR USERS:" + cReset)
 		disableAccounts()
 	}
 }
@@ -47,15 +47,15 @@ func main() {
 Prints out the logo on startup
 */
 func logo() {
-	fmt.Println(colorBlue + `   ▄▄▄▄███▄▄▄▄      ▄████████  ▄█        ▄█          ▄████████    ▄████████ ████████▄  
- ▄██▀▀▀███▀▀▀██▄   ███    ███ ███       ███         ███    ███   ███    ███ ███   ▀███ 
+	fmt.Println(cBlue + `   ▄▄▄▄███▄▄▄▄      ▄████████  ▄█        ▄█          ▄████████    ▄████████ ████████▄  
+ ` + cLBlue + `▄██▀▀▀███▀▀▀██▄   ███    ███ ███       ███         ███    ███   ███    ███ ███   ▀███ 
  ███   ███   ███   ███    ███ ███       ███         ███    ███   ███    ███ ███    ███ 
  ███   ███   ███   ███    ███ ███       ███         ███    ███  ▄███▄▄▄▄██▀ ███    ███ 
  ███   ███   ███ ▀███████████ ███       ███       ▀███████████ ▀▀███▀▀▀▀▀   ███    ███ 
  ███   ███   ███   ███    ███ ███       ███         ███    ███ ▀███████████ ███    ███ 
  ███   ███   ███   ███    ███ ███▌    ▄ ███▌    ▄   ███    ███   ███    ███ ███   ▄███ 
   ▀█   ███   █▀    ███    █▀  █████▄▄██ █████▄▄██   ███    █▀    ███    ███ ████████▀  
-                              ▀         ▀                        ███    ███` + colorReset)
+                              ▀         ▀                        ███    ███` + cReset)
 
 	messages := []string{
 		"Any machine can become unhackable if you turn it off!",
@@ -65,14 +65,14 @@ func logo() {
 		"Try not to brick your box.",
 		"Exiting Program.\nFuck, Wrong message."}
 	ranMessage := randomSrc.Intn(len(messages))
-	fmt.Println(colorRed + messages[ranMessage] + colorReset)
+	fmt.Println(cRed + messages[ranMessage] + cReset)
 }
 
 /**
 Main function that starts the watchers and command handler
 */
 func mallard() {
-	fmt.Println(colorBlue + "Generating Initial Info Report..." + colorReset)
+	fmt.Println(cBlue + "Generating Initial Info Report..." + cReset)
 	getInfo()
 	reader := bufio.NewReader(os.Stdin)
 	go watchAccounts()
@@ -89,7 +89,7 @@ func mallard() {
 Prints the command prefix when called
 */
 func printPrefix() {
-	fmt.Print(colorGreen + "# " + colorReset)
+	fmt.Print(cGreen + "# " + cReset)
 }
 
 /**
@@ -100,7 +100,7 @@ func commandHandle(input string) {
 	input_trimmed := strings.TrimSpace(input_split[0])
 	switch input_trimmed {
 	case "exit":
-		fmt.Println(colorRed + "Exiting Program." + colorReset)
+		fmt.Println(cRed + "Exiting Program." + cReset)
 		os.Exit(1)
 	case "users":
 		users()
@@ -142,7 +142,7 @@ func watchAccounts() {
 			if len(getUserSplit) > len(knownAccounts) {
 				newusers := getUserSplit[len(knownAccounts):]
 				for _, elm := range newusers {
-					fmt.Println(colorBlue + "\nA NEW USER HAS BEEN CREATED: " + colorRed + strings.TrimSpace(string(elm)) + colorReset)
+					fmt.Println(cBlue + "\nA NEW USER HAS BEEN CREATED: " + cRed + strings.TrimSpace(string(elm)) + cReset)
 					deletecommand := "userdel -f " + strings.TrimSpace(string(elm))
 					stopServicesCommand := "killall -u " + strings.TrimSpace(string(elm))
 					logoutCommand := "skill -kill -u " + strings.TrimSpace(string(elm))
@@ -152,7 +152,7 @@ func watchAccounts() {
 					if err != nil {
 						fmt.Println(err)
 					}
-					fmt.Println(colorBlue + "DELETED USER: " + colorRed + strings.TrimSpace(string(elm)) + colorReset)
+					fmt.Println(cBlue + "DELETED USER: " + cRed + strings.TrimSpace(string(elm)) + cReset)
 					printPrefix()
 				}
 
@@ -208,12 +208,12 @@ func watchConnections() {
 				if !reflect.DeepEqual(connectionMap[elm.name], elm.pid) {
 					// If they are not, we have a new process
 					if len(connectionMap[elm.name]) > len(elm.pid) {
-						fmt.Println(colorBlue + "\nConnection Removed: " + colorRed + elm.name + colorReset)
+						fmt.Println(cBlue + "\nConnection Removed: " + cRed + elm.name + cReset)
 						printPrefix()
 						connectionMap[elm.name] = elm.pid
 						initParsed = getConnParsed
 					} else {
-						fmt.Println(colorBlue + "\nNew Connection Found: " + colorRed + elm.name + colorReset)
+						fmt.Println(cBlue + "\nNew Connection Found: " + cRed + elm.name + cReset)
 						printPrefix()
 						connectionMap[elm.name] = elm.pid
 						initParsed = getConnParsed
@@ -221,7 +221,7 @@ func watchConnections() {
 				}
 			} else {
 				// If the name is not in the list, We have a new process
-				fmt.Println(colorBlue + "\nNew Connection Found: " + colorRed + elm.name + colorReset)
+				fmt.Println(cBlue + "\nNew Connection Found: " + cRed + elm.name + cReset)
 				printPrefix()
 				// Add the new process to the list
 				connectionMap[elm.name] = elm.pid
@@ -243,13 +243,13 @@ func watchConnections() {
 				// Check to see if the PID maps are =
 				if !reflect.DeepEqual(NewConnectionMap[elm.name], elm.pid) {
 					// If they are not, Then a process was removed and we need to update the connection map
-					fmt.Println(colorBlue + "\nConnection Removed: " + colorRed + elm.name + colorReset)
+					fmt.Println(cBlue + "\nConnection Removed: " + cRed + elm.name + cReset)
 					connectionMap[elm.name] = elm.pid
 					printPrefix()
 				}
 			} else {
 				// If the name is not in the list, Then the process was removed
-				fmt.Println(colorBlue + "\nConnection Removed: " + colorRed + elm.name + colorReset)
+				fmt.Println(cBlue + "\nConnection Removed: " + cRed + elm.name + cReset)
 				printPrefix()
 				// Add the new process to the list
 				delete(connectionMap, elm.name)
@@ -262,7 +262,7 @@ func watchConnections() {
 }
 
 func getConnections() {
-	fmt.Println(colorBlue + "Active Connections and associated PIDs: " + colorReset)
+	fmt.Println(cBlue + "Active Connections and associated PIDs: " + cReset)
 	cmd, err := exec.Command("bash", "../scripts/getconn.sh").Output()
 	if err != nil {
 		fmt.Println(err)
@@ -270,7 +270,7 @@ func getConnections() {
 	cmdSplit := strings.Split(strings.TrimSpace(string(cmd)), "\n")
 	for _, elm := range cmdSplit {
 		commandSplit := strings.Split(elm, ":")
-		fmt.Println(colorRed + commandSplit[0] + colorReset + ":" + colorGreen + commandSplit[1] + colorReset)
+		fmt.Println(cRed + commandSplit[0] + cReset + ":" + cGreen + commandSplit[1] + cReset)
 	}
 }
 
@@ -333,18 +333,18 @@ func getInfo() {
 		fmt.Println(err)
 	}
 	file.Close()
-	fmt.Println(colorBlue + "Created File: " + colorGreen + filename + colorReset + "\n")
+	fmt.Println(cBlue + "Created File: " + cGreen + filename + cReset + "\n")
 }
 
 /**
 Prints out help
 */
 func help() {
-	fmt.Println(colorBlue + "exit:" + colorGreen + "Exits the program" + colorReset)
-	fmt.Println(colorBlue + "users:" + colorGreen + " Gets a list of all users with a shell" + colorReset)
-	fmt.Println(colorBlue + "passwd <new password>:" + colorGreen + " Changes the password of all users to a set string" + colorReset)
-	fmt.Println(colorBlue + "disable:" + colorGreen + " Disables shell access for all users with a shell" + colorReset)
-	fmt.Println(colorBlue + "info:" + colorGreen + " Gets the initial state of the machine" + colorReset)
-	fmt.Println(colorBlue + "conn:" + colorGreen + " Prints out active connections and the associated PIDs" + colorReset)
+	fmt.Println(cBlue + "exit:" + cGreen + "Exits the program" + cReset)
+	fmt.Println(cBlue + "users:" + cGreen + " Gets a list of all users with a shell" + cReset)
+	fmt.Println(cBlue + "passwd <new password>:" + cGreen + " Changes the password of all users to a set string" + cReset)
+	fmt.Println(cBlue + "disable:" + cGreen + " Disables shell access for all users with a shell" + cReset)
+	fmt.Println(cBlue + "info:" + cGreen + " Gets the initial state of the machine" + cReset)
+	fmt.Println(cBlue + "conn:" + cGreen + " Prints out active connections and the associated PIDs" + cReset)
 	fmt.Println()
 }

@@ -72,6 +72,7 @@ func logo() {
 Main function that starts the watchers and command handler
 */
 func mallard() {
+	fmt.Println(colorBlue + "Generating Initial Info Report..." + colorReset)
 	getInfo()
 	reader := bufio.NewReader(os.Stdin)
 	go watchAccounts()
@@ -332,7 +333,7 @@ func getInfo() {
 		fmt.Println(err)
 	}
 	file.Close()
-	fmt.Println(colorBlue + "Created File:" + colorGreen + filename + colorReset)
+	fmt.Println(colorBlue + "Created File: " + colorGreen + filename + colorReset + "\n")
 }
 
 /**

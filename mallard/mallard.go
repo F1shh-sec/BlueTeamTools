@@ -110,6 +110,8 @@ func commandHandle(input string) {
 		getInfo()
 	case "help":
 		help()
+	case "conn":
+		getConnections()
 	default:
 		fmt.Println("Command Not Found...\n")
 	}
@@ -256,6 +258,15 @@ func watchConnections() {
 		time.Sleep(time.Duration(500) * time.Millisecond)
 	}
 
+}
+
+func getConnections() {
+	fmt.Print("Users with shell access: ")
+	cmd, err := exec.Command("bash", "../scripts/getconn.sh").Output()
+	if err != nil {
+		fmt.Println(err)
+	}
+	fmt.Println(string(cmd))
 }
 
 /**

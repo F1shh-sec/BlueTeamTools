@@ -171,9 +171,15 @@ func watchConnections() {
 			if len(initConnSplit) < len(getConnsSplit) {
 				diff := difference(getConnsSplit, initConnSplit)
 				for _, elm := range diff {
-					fmt.Println(colorBlue + "\nA NEW CONNECTION BEEN CREATED: " + colorRed + strings.TrimSpace(string(elm)) + colorReset)
+					connectionString := "../scripts/getConnPid.sh " + elm
+					newConnPid, err := exec.Command("bash", connectionString).Output()
+					if err != nil {
+						fmt.Println(err)
+					}
+					fmt.Println(colorBlue + "\nA NEW CONNECTION BEEN CREATED: " + colorRed + strings.TrimSpace(string(elm)) + ":" + string(newConnPid) + colorReset)
 				}
 				initConnSplit = getConnsSplit
+
 				printPrefix()
 			} else {
 				diff := difference(initConnSplit, getConnsSplit)

@@ -17,6 +17,8 @@ This tool comes with no warranty or support, use at your own risk.
 |passwd|Changes all users passwords|
 |users|Gets a list of all users who have a usable shell|
 |disable|Disables shell access for all users with a shell|
+|info|Runs Info collection script|
+|conn|Prints out all active TCP/UDP connections|
 
 
 |Flag|Description|

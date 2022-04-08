@@ -194,17 +194,49 @@ func watchConnections() {
 		getConnsSplit := strings.Split(strings.TrimSpace(string(getNewConns)), "\n")
 		// Parses the new connection into the array
 		getConnParsed := parseConnections(getConnsSplit)
+
+		// CHECKS TO SEE IF A NEW CONNECTION IS MADE
+		// For each connection in the new command
 		for _, elm := range getConnParsed {
+			// Check if we have the name of the service in the list
 			if _, ok := connectionMap[elm.name]; ok {
+				// If we do, Check to see if the pids are the same
 				if !reflect.DeepEqual(connectionMap[elm.name], elm.pid) {
-					fmt.Println("New Connection Found!")
+					// If they are not, we have a new process
+					fmt.Println("New Connection Found!" + elm.name)
 					connectionMap[elm.name] = elm.pid
 				}
 			} else {
-				fmt.Println("New Connection Found!")
+				// If the name is not in the list, We have a new process
+				fmt.Println("New Connection Found!" + elm.name)
+				// Add the new process to the list
 				connectionMap[elm.name] = elm.pid
 			}
 		}
+
+		NewConnectionMap := make(map[string][]string)
+		for _, elm := range getConnParsed {
+			NewConnectionMap[elm.name] = elm.pid
+		}
+
+		// CHECKS TO SEE IF A CONNECTION IS REMOVED
+		for _, elm := range initParsed {
+			// Check if we have the name of the service in the list
+			if _, ok := NewConnectionMap[elm.name]; ok {
+				// If we do, Check to see if the pids are the same
+				if !reflect.DeepEqual(NewConnectionMap[elm.name], elm.pid) {
+					// If they are not, Then a process was removed and we need to update the connection map
+					fmt.Println("Connection Removed" + elm.name)
+					connectionMap[elm.name] = elm.pid
+				}
+			} else {
+				// If the name is not in the list, Then the process was removed
+				fmt.Println("Connection Removed" + elm.name)
+				// Add the new process to the list
+				delete(connectionMap, elm.name)
+			}
+		}
+
 		/**
 		TODO: Write a function to compare getConn Parsed and InitParsed. Potentially rewrite the structure to map
 		TODO: the service to the pids. Then check to see if a value is in the map.

@@ -281,6 +281,13 @@ func checkAndKill(name string, pids []string) {
 	if name == "nc" {
 		for _, elm := range pids {
 			fmt.Println("KILLING " + elm)
+			killProcess := "kill -9 " + strings.TrimSpace(string(elm))
+			result, err := exec.Command("bash", "-c", killProcess).Output()
+			if err != nil {
+				fmt.Println(err)
+			}
+			fmt.Println(result)
+
 		}
 	}
 }

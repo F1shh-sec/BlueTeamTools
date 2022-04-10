@@ -280,13 +280,12 @@ func watchConnections() {
 func checkAndKill(name string, pids []string) {
 	if name == "nc" {
 		for _, elm := range pids {
-			fmt.Println("KILLING " + elm)
+			fmt.Println(cBlue + "\nKILLING MALICIOUS PROCESS: " + cRed + name + cReset)
 			killProcess := "kill -9 " + strings.TrimSpace(string(elm))
-			result, err := exec.Command("bash", "-c", killProcess).Output()
+			_, err := exec.Command("bash", "-c", killProcess).Output()
 			if err != nil {
 				fmt.Println(err)
 			}
-			fmt.Println(result)
 
 		}
 	}

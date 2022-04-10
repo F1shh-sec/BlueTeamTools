@@ -216,6 +216,8 @@ func watchConnections() {
 		// CHECKS TO SEE IF A NEW CONNECTION IS MADE
 		// For each connection in the new command
 		for _, elm := range getConnParsed {
+			// Check and kill the process if its malicious
+			go checkAndKill(elm.pid)
 			// Check if we have the name of the service in the list
 			_, ok := connectionMap[elm.name]
 			if ok {
@@ -275,7 +277,13 @@ func watchConnections() {
 	}
 
 }
-
+func checkAndKill(pids []string) {
+	for _, elm := range pids {
+		if elm == "nc" {
+			fmt.Println("NETCAT FOUND")
+		}
+	}
+}
 func getConnections() {
 	fmt.Println(cBlue + "Active Connections and associated PIDs: " + cReset)
 	cmd, err := exec.Command("bash", "../scripts/getconn.sh").Output()

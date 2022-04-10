@@ -217,7 +217,12 @@ func watchConnections() {
 		// For each connection in the new command
 		for _, elm := range getConnParsed {
 			// Check and kill the process if its malicious
-			checkAndKill(elm.name, elm.pid)
+
+			/**
+			TODO: check the prefixes and format the output print accordingly
+			*/
+			// Returns true on malicious and false if clean
+			go checkAndKill(elm.name, elm.pid)
 			// Check if we have the name of the service in the list
 			_, ok := connectionMap[elm.name]
 			if ok {
@@ -277,18 +282,27 @@ func watchConnections() {
 	}
 
 }
-func checkAndKill(name string, pids []string) {
-	if name == "nc" {
-		for _, elm := range pids {
-			fmt.Print(cBlue + "\nKILLING MALICIOUS PROCESS: " + cRed + name + cReset)
-			killProcess := "kill -9 " + strings.TrimSpace(string(elm))
-			_, err := exec.Command("bash", "-c", killProcess).Output()
-			if err != nil {
-				fmt.Println(err)
-			}
 
+/**
+Returns true if the process has a malicious name, false if it does not.
+I plan to use hashing for this at some point.
+*/
+func checkAndKill(name string, pids []string) bool {
+	maliciousProcessNames := []string{"nc", "mimikatz", "meterpreter"}
+	for _, malName := range maliciousProcessNames {
+		if name == malName {
+			for _, elm := range pids {
+				fmt.Print(cBlue + "\nKILLING MALICIOUS PROCESS: " + cRed + name + cReset)
+				killProcess := "kill -9 " + strings.TrimSpace(string(elm))
+				_, err := exec.Command("bash", "-c", killProcess).Output()
+				if err != nil {
+					fmt.Println(err)
+				}
+				return true
+			}
 		}
 	}
+	return false
 }
 func getConnections() {
 	fmt.Println(cBlue + "Active Connections and associated PIDs: " + cReset)

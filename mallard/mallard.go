@@ -217,7 +217,7 @@ func watchConnections() {
 		// For each connection in the new command
 		for _, elm := range getConnParsed {
 			// Check and kill the process if its malicious
-			go checkAndKill(elm.pid)
+			go checkAndKill(elm.name, elm.pid)
 			// Check if we have the name of the service in the list
 			_, ok := connectionMap[elm.name]
 			if ok {
@@ -277,10 +277,10 @@ func watchConnections() {
 	}
 
 }
-func checkAndKill(pids []string) {
-	for _, elm := range pids {
-		if elm == "nc" {
-			fmt.Println("NETCAT FOUND")
+func checkAndKill(name string, pids []string) {
+	if name == "nc" {
+		for _, elm := range pids {
+			fmt.Println("KILLING " + elm)
 		}
 	}
 }

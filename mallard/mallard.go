@@ -227,6 +227,7 @@ func watchConnections() {
 			ismalicious := checkAndKill(elm.name, elm.pid)
 			if ismalicious {
 				fmt.Println(cBlue + "\nNew Connection Found: " + cRed + elm.name + cReset)
+				getProcessInfoArray(elm.pid)
 				fmt.Println(cBlue + "Killing Malicious Process: " + cRed + elm.name + cReset)
 			}
 			// Check if we have the name of the service in the list
@@ -247,6 +248,7 @@ func watchConnections() {
 					} else {
 						if !ismalicious {
 							fmt.Println(cBlue + "\nNew Connection Found: " + cRed + elm.name + cReset)
+							getProcessInfoArray(elm.pid)
 							printPrefix()
 						}
 						connectionMap[elm.name] = elm.pid
@@ -257,6 +259,7 @@ func watchConnections() {
 				// If the name is not in the list, We have a new process
 				if !ismalicious {
 					fmt.Println(cBlue + "\nNew Connection Found: " + cRed + elm.name + cReset)
+					getProcessInfoArray(elm.pid)
 					printPrefix()
 				}
 				// Add the new process to the list
@@ -322,6 +325,12 @@ func checkAndKill(name string, pids []string) bool {
 		}
 	}
 	return false
+}
+
+func getProcessInfoArray(pids []string) {
+	for _, elm := range pids {
+		getProcessInfo(elm)
+	}
 }
 
 func getProcessInfo(pid string) {
@@ -437,5 +446,6 @@ func help() {
 	fmt.Println(cBlue + "disable:" + cGreen + " Disables shell access for all users with a shell" + cReset)
 	fmt.Println(cBlue + "info:" + cGreen + " Gets the initial state of the machine" + cReset)
 	fmt.Println(cBlue + "conn:" + cGreen + " Prints out active connections and the associated PIDs" + cReset)
+	fmt.Println(cBlue + "pinfo <pid>:" + cGreen + " Gets Hash and file location for a process" + cReset)
 	fmt.Println()
 }

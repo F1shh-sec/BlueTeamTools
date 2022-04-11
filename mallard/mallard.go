@@ -306,7 +306,7 @@ func checkAndKill(name string, pids []string) bool {
 	for _, malName := range maliciousProcessNames {
 		if name == malName {
 			for _, elm := range pids {
-				filePathString := "lsof -p " + elm + " grep -m 1 txt | awk '{print $9}'"
+				filePathString := "lsof -p " + elm + " | grep -m 1 txt | awk '{print $9}'"
 				filepath, err := exec.Command("bash", "-c", filePathString).Output()
 				hashString := "md5sum " + string(filepath) + " | awk '{print $1}'"
 				md5hash, err := exec.Command("bash", "-c", hashString).Output()
@@ -325,7 +325,7 @@ func checkAndKill(name string, pids []string) bool {
 }
 
 func getProcessInfo(pid string) {
-	filePathString := "lsof -p " + pid + " grep -m 1 txt"
+	filePathString := "lsof -p " + pid + " | grep -m 1 txt"
 	filepath, err := exec.Command("bash", "-c", filePathString).Output()
 	hashString := "md5sum " + string(filepath) + " | awk '{print $1}'"
 	md5hash, err := exec.Command("bash", "-c", hashString).Output()
@@ -337,7 +337,7 @@ func getProcessInfo(pid string) {
 }
 
 func getFilepath(pid string) string {
-	filePathString := "lsof -p " + pid + " grep -m 1 txt | awk '{print $9}'"
+	filePathString := "lsof -p " + pid + " | grep -m 1 txt | awk '{print $9}'"
 	filepath, err := exec.Command("bash", "-c", filePathString).Output()
 	if err != nil {
 		fmt.Println(err)

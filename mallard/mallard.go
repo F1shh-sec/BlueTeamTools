@@ -298,9 +298,9 @@ func checkAndKill(name string, pids []string) bool {
 
 				hashString := "md5sum " + string(filepath)
 				md5hash, err := exec.Command("bash", "-c", hashString).Output()
-				fmt.Println(md5hash)
-				fmt.Print(cBlue + "\nKILLING MALICIOUS PROCESS: " + cRed + name + cReset)
+				fmt.Println(string(md5hash))
 
+				fmt.Print(cBlue + "\nKILLING MALICIOUS PROCESS: " + cRed + name + cReset)
 				killProcess := "kill -9 " + strings.TrimSpace(string(elm))
 				processKilled, err := exec.Command("bash", "-c", killProcess).Output()
 				if err != nil {

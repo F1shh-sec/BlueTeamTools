@@ -227,7 +227,6 @@ func watchConnections() {
 			ismalicious := checkAndKill(elm.name, elm.pid)
 			if ismalicious {
 				fmt.Println(cBlue + "\nNew Connection Found: " + cRed + elm.name + cReset)
-				getProcessInfoArray(elm.pid)
 				fmt.Println(cBlue + "Killing Malicious Process: " + cRed + elm.name + cReset)
 			}
 			// Check if we have the name of the service in the list
@@ -336,7 +335,7 @@ func getProcessInfoArray(pids []string) {
 func getProcessInfo(pid string) {
 	filePathString := "lsof -p " + pid + " | grep -m 1 txt | awk '{print $9}'"
 	filepath, _ := exec.Command("bash", "-c", filePathString).Output()
-	hashString := "md5sum " + string(filepath) + " | awk '{print $1}'"
+	hashString := "md5sum " + strings.TrimSpace(string(filepath)) + " | awk '{print $1}'"
 	md5hash, _ := exec.Command("bash", "-c", hashString).Output()
 	fmt.Println(cBlue + "File path: " + cRed + strings.TrimSpace(string(filepath)) + cReset)
 	fmt.Println(cBlue + "MD5 Hash: " + cRed + strings.TrimSpace(string(md5hash)) + cReset)

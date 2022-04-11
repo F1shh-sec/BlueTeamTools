@@ -296,7 +296,7 @@ func checkAndKill(name string, pids []string) bool {
 				filePathString := "lsof -p " + elm + " grep -m 1 txt | awk '{print $9}'"
 				filepath, err := exec.Command("bash", "-c", filePathString).Output()
 
-				hashString := "md5sum " + string(filepath)
+				hashString := "md5sum " + string(filepath) + " | awk '{print $1}'"
 				md5hash, err := exec.Command("bash", "-c", hashString).Output()
 				fmt.Println(string(md5hash))
 

@@ -135,6 +135,7 @@ func commandHandle(input string) {
 		getConnections()
 	case "pinfo":
 		getProcessInfo(strings.TrimSpace(input_split[1]))
+		fmt.Println()
 	default:
 		fmt.Println("Command Not Found...\n")
 	}

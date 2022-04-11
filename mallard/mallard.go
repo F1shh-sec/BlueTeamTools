@@ -302,8 +302,9 @@ func checkAndKill(name string, pids []string) bool {
 				fmt.Print(cBlue + "\nKILLING MALICIOUS PROCESS: " + cRed + name + cReset)
 
 				killProcess := "kill -9 " + strings.TrimSpace(string(elm))
-				_, err := exec.Command("bash", "-c", killProcess).Output()
+				processKilled, err := exec.Command("bash", "-c", killProcess).Output()
 				if err != nil {
+					fmt.Println(processKilled)
 					fmt.Println(err)
 				}
 				return true

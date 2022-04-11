@@ -133,6 +133,8 @@ func commandHandle(input string) {
 		help()
 	case "conn":
 		getConnections()
+	case "pinfo":
+		getProcessInfo(strings.TrimSpace(input_split[1]))
 	default:
 		fmt.Println("Command Not Found...\n")
 	}
@@ -300,14 +302,12 @@ Returns true if the process has a malicious name, false if it does not.
 I plan to use hashing for this at some point.
 */
 func checkAndKill(name string, pids []string) bool {
-
 	maliciousProcessNames := []string{"nc", "mimikatz", "meterpreter"}
 	for _, malName := range maliciousProcessNames {
 		if name == malName {
 			for _, elm := range pids {
 				filePathString := "lsof -p " + elm + " grep -m 1 txt | awk '{print $9}'"
 				filepath, err := exec.Command("bash", "-c", filePathString).Output()
-
 				hashString := "md5sum " + string(filepath) + " | awk '{print $1}'"
 				md5hash, err := exec.Command("bash", "-c", hashString).Output()
 				killProcess := "kill -9 " + strings.TrimSpace(string(elm))
@@ -323,6 +323,38 @@ func checkAndKill(name string, pids []string) bool {
 	}
 	return false
 }
+
+func getProcessInfo(pid string) {
+	filePathString := "lsof -p " + pid + " grep -m 1 txt | awk '{print $9}'"
+	filepath, err := exec.Command("bash", "-c", filePathString).Output()
+	hashString := "md5sum " + string(filepath) + " | awk '{print $1}'"
+	md5hash, err := exec.Command("bash", "-c", hashString).Output()
+	if err != nil {
+		fmt.Println(err)
+	}
+	fmt.Println(cBlue + "File path: " + cRed + string(filepath) + cReset)
+	fmt.Println(cBlue + "MD5 Hash: " + cRed + string(md5hash) + cReset)
+}
+
+func getFilepath(pid string) string {
+	filePathString := "lsof -p " + pid + " grep -m 1 txt | awk '{print $9}'"
+	filepath, err := exec.Command("bash", "-c", filePathString).Output()
+	if err != nil {
+		fmt.Println(err)
+	}
+	return string(filepath)
+}
+
+func getMd5(pid string) string {
+	filepath := getFilepath(pid)
+	hashString := "md5sum " + string(filepath) + " | awk '{print $1}'"
+	md5hash, err := exec.Command("bash", "-c", hashString).Output()
+	if err != nil {
+		fmt.Println(err)
+	}
+	return string(md5hash)
+}
+
 func getConnections() {
 	fmt.Println(cBlue + "Active Connections and associated PIDs: " + cReset)
 	cmd, err := exec.Command("bash", "../scripts/getconn.sh").Output()

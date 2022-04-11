@@ -332,8 +332,8 @@ func getProcessInfo(pid string) {
 	if err != nil {
 		fmt.Println(err)
 	}
-	fmt.Println(cBlue + "File path: " + cRed + string(filepath) + cReset)
-	fmt.Println(cBlue + "MD5 Hash: " + cRed + string(md5hash) + cReset)
+	fmt.Println(cBlue + "File path: " + cRed + strings.TrimSpace(string(filepath)) + cReset)
+	fmt.Println(cBlue + "MD5 Hash: " + cRed + strings.TrimSpace(string(md5hash)) + cReset)
 }
 
 func getFilepath(pid string) string {

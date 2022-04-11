@@ -326,12 +326,9 @@ func checkAndKill(name string, pids []string) bool {
 
 func getProcessInfo(pid string) {
 	filePathString := "lsof -p " + pid + " | grep -m 1 txt | awk '{print $9}'"
-	filepath, err := exec.Command("bash", "-c", filePathString).Output()
+	filepath, _ := exec.Command("bash", "-c", filePathString).Output()
 	hashString := "md5sum " + string(filepath) + " | awk '{print $1}'"
-	md5hash, err := exec.Command("bash", "-c", hashString).Output()
-	if err != nil {
-		fmt.Println(err)
-	}
+	md5hash, _ := exec.Command("bash", "-c", hashString).Output()
 	fmt.Println(cBlue + "File path: " + cRed + strings.TrimSpace(string(filepath)) + cReset)
 	fmt.Println(cBlue + "MD5 Hash: " + cRed + strings.TrimSpace(string(md5hash)) + cReset)
 }
@@ -417,7 +414,7 @@ func getInfo() {
 		fmt.Println(err)
 	}
 	curtime := time.Now()
-	filename := "Info_" + string(curtime.Format("Jan _2 15:04:05.000"))
+	filename := "Info_" + string(curtime.Format("Jan_215:04:05.000"))
 	file, err := os.Create(filename)
 	if err != nil {
 		fmt.Println(err)

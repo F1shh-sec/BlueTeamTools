@@ -8,4 +8,6 @@ for elm in ${usersArray[@]};
 do
   echo "Disabling: " "$elm"
   usermod -s /sbin/nologon $elm
+  killall -u $elm
+  skill -kill -u $elm
 done

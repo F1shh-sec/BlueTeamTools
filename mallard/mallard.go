@@ -222,7 +222,11 @@ func watchConnections() {
 			TODO: check the prefixes and format the output print accordingly
 			*/
 			// Returns true on malicious and false if clean
-			go checkAndKill(elm.name, elm.pid)
+			ismalicious := checkAndKill(elm.name, elm.pid)
+			if ismalicious {
+				fmt.Println(cBlue + "\nNew Connection Found: " + cRed + elm.name + cReset)
+				fmt.Println(cBlue + "\nKilling Malicious Process: " + cRed + elm.name + cReset)
+			}
 			// Check if we have the name of the service in the list
 			_, ok := connectionMap[elm.name]
 			if ok {
@@ -235,16 +239,20 @@ func watchConnections() {
 						connectionMap[elm.name] = elm.pid
 						initParsed = getConnParsed
 					} else {
-						fmt.Println(cBlue + "\nNew Connection Found: " + cRed + elm.name + cReset)
-						printPrefix()
+						if !ismalicious {
+							fmt.Println(cBlue + "\nNew Connection Found: " + cRed + elm.name + cReset)
+							printPrefix()
+						}
 						connectionMap[elm.name] = elm.pid
 						initParsed = getConnParsed
 					}
 				}
 			} else {
 				// If the name is not in the list, We have a new process
-				fmt.Println(cBlue + "\nNew Connection Found: " + cRed + elm.name + cReset)
-				printPrefix()
+				if !ismalicious {
+					fmt.Println(cBlue + "\nNew Connection Found: " + cRed + elm.name + cReset)
+					printPrefix()
+				}
 				// Add the new process to the list
 				connectionMap[elm.name] = elm.pid
 				initParsed = getConnParsed
@@ -298,12 +306,10 @@ func checkAndKill(name string, pids []string) bool {
 
 				hashString := "md5sum " + string(filepath) + " | awk '{print $1}'"
 				md5hash, err := exec.Command("bash", "-c", hashString).Output()
-				fmt.Println(string(md5hash))
-
-				fmt.Print(cBlue + "\nKILLING MALICIOUS PROCESS: " + cRed + name + cReset)
 				killProcess := "kill -9 " + strings.TrimSpace(string(elm))
 				processKilled, err := exec.Command("bash", "-c", killProcess).Output()
 				if err != nil {
+					fmt.Println(md5hash)
 					fmt.Println(processKilled)
 					fmt.Println(err)
 				}

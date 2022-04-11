@@ -225,7 +225,7 @@ func watchConnections() {
 			ismalicious := checkAndKill(elm.name, elm.pid)
 			if ismalicious {
 				fmt.Println(cBlue + "\nNew Connection Found: " + cRed + elm.name + cReset)
-				fmt.Println(cBlue + "\nKilling Malicious Process: " + cRed + elm.name + cReset)
+				fmt.Println(cBlue + "Killing Malicious Process: " + cRed + elm.name + cReset)
 			}
 			// Check if we have the name of the service in the list
 			_, ok := connectionMap[elm.name]
@@ -234,7 +234,11 @@ func watchConnections() {
 				if !reflect.DeepEqual(connectionMap[elm.name], elm.pid) {
 					// If they are not, we have a new process
 					if len(connectionMap[elm.name]) > len(elm.pid) {
-						fmt.Println(cBlue + "\nConnection Removed: " + cRed + elm.name + cReset)
+						if ismalicious {
+							fmt.Println(cBlue + "Connection Removed: " + cRed + elm.name + cReset)
+						} else {
+							fmt.Println(cBlue + "\nConnection Removed: " + cRed + elm.name + cReset)
+						}
 						printPrefix()
 						connectionMap[elm.name] = elm.pid
 						initParsed = getConnParsed

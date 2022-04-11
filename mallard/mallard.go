@@ -288,11 +288,19 @@ Returns true if the process has a malicious name, false if it does not.
 I plan to use hashing for this at some point.
 */
 func checkAndKill(name string, pids []string) bool {
+
 	maliciousProcessNames := []string{"nc", "mimikatz", "meterpreter"}
 	for _, malName := range maliciousProcessNames {
 		if name == malName {
 			for _, elm := range pids {
+				filePathString := "lsof -p " + elm + " grep -m 1 txt | awk '{print $9}'"
+				filepath, err := exec.Command("bash", "-c", filePathString).Output()
+
+				hashString := "md5sum " + string(filepath)
+				md5hash, err := exec.Command("bash", "-c", hashString).Output()
+				fmt.Println(md5hash)
 				fmt.Print(cBlue + "\nKILLING MALICIOUS PROCESS: " + cRed + name + cReset)
+
 				killProcess := "kill -9 " + strings.TrimSpace(string(elm))
 				_, err := exec.Command("bash", "-c", killProcess).Output()
 				if err != nil {

@@ -221,9 +221,6 @@ func watchConnections() {
 		for _, elm := range getConnParsed {
 			// Check and kill the process if its malicious
 
-			/**
-			TODO: check the prefixes and format the output print accordingly
-			*/
 			// Returns true on malicious and false if clean
 			ismalicious := checkAndKill(elm.name, elm.pid)
 			if ismalicious {
